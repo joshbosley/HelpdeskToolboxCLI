@@ -1,0 +1,17 @@
+
+Core functionality :
+
+1. Create function to list all modules from boxcore.modulemap, and
+   a way for the user to call it.
+
+2. Create error handler that can be accessed by all modules in the event
+   of something terrible happening
+
+
+Module creation :
+
+    Disk formatting
+    Junk file cleaner
+    Registry editor
+    Network troubleshooter/ scanner/
+    Standard file backup
