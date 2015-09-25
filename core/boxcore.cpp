@@ -24,7 +24,7 @@ void BoxCore::beginHumanInteraction()
 {
     session = true;
     std::string line;
-    struct returnItem ri('N',"");
+    struct returnItem ri(HDTB_RETURN_BAD,"None");
 
     while(session && std::getline(std::cin, line))
     {
@@ -33,6 +33,9 @@ void BoxCore::beginHumanInteraction()
         std::vector<std::string> args{
             std::istream_iterator<std::string>{iss},
             std::istream_iterator<std::string>{}};
+
+        // Add request to history
+        history.push(args);
 
         // Process request
         ri = processRequest(args);
