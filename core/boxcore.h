@@ -4,6 +4,10 @@
 #include <stack>
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
 
 namespace hdtoolbox
 {
@@ -11,21 +15,14 @@ namespace hdtoolbox
 // For returning process information
 struct returnItem
 {
-    char retCode;
-    std::string message;
-};
-
-// Command structure
-struct command
-{
-    command(std::string module, std::string input)
+    returnItem(char code, std::string message)
     {
-        this->module = module;
-        this->input = input;
+        this->retCode = code;
+        this->message = message;
     }
 
-    std::string module;
-    std::string input;
+    char retCode;
+    std::string message;
 };
 
 // Core operations
@@ -45,10 +42,10 @@ private:
     bool moduleHasPrompt;
 
     // For saving command history
-    std::stack<struct command> history;
+    std::stack< std::vector<std::string> > history;
 
     // Process input
-    struct returnItem processRequest(struct command);
+    struct returnItem processRequest(std::vector<std::string>);
 
 };
 
