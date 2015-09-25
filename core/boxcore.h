@@ -1,29 +1,26 @@
 #ifndef HDTB_BOXCORE_H
 #define HDTB_BOXCORE_H
 
+#include <map>
 #include <stack>
 #include <string>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <iterator>
 #include <vector>
+#include <sstream>
+#include <iterator>
+#include <iostream>
+#include <algorithm>
+
+// The modules accessed by user
+#include "../modules/modulebox.h"
+
+// The returnable item
+#include "../modules/returnitem.h"
+
+// The returnable codes
+#include "../modules/returncodes.h"
 
 namespace hdtoolbox
 {
-
-// For returning process information
-struct returnItem
-{
-    returnItem(char code, std::string message)
-    {
-        this->retCode = code;
-        this->message = message;
-    }
-
-    char retCode;
-    std::string message;
-};
 
 // Core operations
 class BoxCore
@@ -36,10 +33,14 @@ public:
 
 private:
 
-    bool session;
+    // Our tool box
+    moduleBox modBox;
 
-    // Handle when/if a module has hijacked user control
-    bool moduleHasPrompt;
+    // For translating arguments to module ids
+    std::map<std::string, int> moduleMap;
+
+    // Control the session
+    bool session;
 
     // For saving command history
     std::stack< std::vector<std::string> > history;
