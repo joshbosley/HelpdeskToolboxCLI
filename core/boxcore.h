@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <iomanip>
 #include <iterator>
 #include <iostream>
 #include <algorithm>
@@ -18,6 +19,10 @@
 
 // The returnable codes
 #include "../modules/returncodes.h"
+
+// Pre-defined os variables
+#include "osinfo.h"
+
 
 namespace hdtoolbox
 {
@@ -32,6 +37,8 @@ public:
     void beginHumanInteraction();
 
 private:
+
+    std::string prompt;
 
     // Our tool box
     moduleBox modBox;

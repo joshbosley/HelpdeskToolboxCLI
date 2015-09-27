@@ -1,6 +1,10 @@
 #ifndef HDTB_HELPMODULE_H
 #define HDTB_HELPMODULE_H
 
+// Macros for human readability within help module
+#define HDTB_HELP_COMMAND_LIST 0
+#define HDTB_HELP_COMMAND_OS 1
+
 /*
         (Step 2)
         Write a module class following the guidlines
