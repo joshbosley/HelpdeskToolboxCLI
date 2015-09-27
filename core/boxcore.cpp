@@ -14,7 +14,7 @@ BoxCore::BoxCore()
     */
 
     moduleMap.insert(
-                std::pair<std::string, int>
+                HDTBMapItem
                 ("help", HDTB_CODE_HELP)
                 );
 
@@ -26,7 +26,9 @@ void BoxCore::beginHumanInteraction()
 {
     session = true;
     std::string line;
-    struct returnItem ri(HDTB_RETURN_BAD,"None");
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    std::cout << "Initiating. Type 'exit' to end session." << std::endl;
 
     while(session)
     {
@@ -78,10 +80,10 @@ void BoxCore::beginHumanInteraction()
     std::cout << std::endl << "Exiting. Goodbye. :-]" << std::endl << std::endl;
 }
 
-returnItem BoxCore::processRequest(std::vector<std::string> args)
+HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
 {
     // Default return
-    struct returnItem ri(HDTB_RETURN_BAD, "None");
+    HDTBReturnItem ri(HDTB_RETURN_BAD, "None");
 
     unsigned outputControl = 0;
 
@@ -90,7 +92,7 @@ returnItem BoxCore::processRequest(std::vector<std::string> args)
     {
         std::cout << "No module triggered by [" << args[0] << "] " << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
-        std::cout << std::endl << "Type 'help' to figure out what to do. " << std::endl;
+        std::cout << std::endl << "Type 'help me' to figure out what to do. " << std::endl;
 
     }
     else
@@ -116,7 +118,7 @@ returnItem BoxCore::processRequest(std::vector<std::string> args)
                 std::cout << std::endl << "Available modules : " << std::endl;
 
                 // List modules [Non-Help module function]
-                for(std::map<std::string, int>::iterator it = moduleMap.begin();
+                for(HDTBMapIterator it = moduleMap.begin();
                     it != moduleMap.end(); ++it)
                 {
                     // Print off columns of 5

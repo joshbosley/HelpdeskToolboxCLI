@@ -11,6 +11,9 @@
 #include <iostream>
 #include <algorithm>
 
+// HTDB specific datatypes
+#include "datatypes.h"
+
 // The modules accessed by user
 #include "modulebox.h"
 
@@ -44,16 +47,16 @@ private:
     moduleBox modBox;
 
     // For translating arguments to module ids
-    std::map<std::string, int> moduleMap;
+    HDTBStandardMap moduleMap;
 
     // Control the session
     bool session;
 
     // For saving command history
-    std::stack< std::vector<std::string> > history;
+    HDTBHistory history;
 
     // Process input
-    struct returnItem processRequest(std::vector<std::string>);
+    HDTBReturnItem processRequest(std::vector<std::string>);
 
 };
 

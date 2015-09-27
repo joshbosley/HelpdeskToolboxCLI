@@ -10,6 +10,7 @@
 #include "returnitem.h"
 #include "returncodes.h"
 #include "moduledirectory.h"
+#include "../../core/datatypes.h"
 
 // Pre-defined os variables
 #include "osinfo.h"
@@ -33,10 +34,10 @@ public:
 protected:
 
     // A map to store recognized commands
-    std::map<std::string, int> commands;
+    HDTBStandardMap commands;
 
     // For saving command history
-    std::stack< std::vector<std::string> > history;
+    HDTBHistory history;
 
 private:
 

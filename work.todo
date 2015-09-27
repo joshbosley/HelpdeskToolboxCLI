@@ -8,6 +8,9 @@ Core functionality :
 2. Create error handler that can be accessed by all modules in the event
    of something terrible happening
 
+3. Create screen handler that can dress up, and mess with the console
+   crossplatorms
+
 
 Module creation :
 

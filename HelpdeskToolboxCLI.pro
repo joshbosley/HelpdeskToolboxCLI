@@ -25,7 +25,8 @@ HEADERS += \
     modules/framework/osinfo.h \
     modules/framework/returncodes.h \
     modules/framework/returnitem.h \
-    modules/help_module/helpmodule.h
+    modules/help_module/helpmodule.h \
+    core/datatypes.h
 
 DISTFILES += \
     work.todo

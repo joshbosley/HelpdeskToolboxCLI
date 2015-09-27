@@ -4,6 +4,7 @@
 // Macros for human readability within help module
 #define HDTB_HELP_COMMAND_LIST 0
 #define HDTB_HELP_COMMAND_OS 1
+#define HDTB_HELP_COMMAND_ME 2
 
 /*
         (Step 2)
@@ -15,6 +16,7 @@
 */
 
 // Required
+#include "../../core/datatypes.h"
 #include "../framework/modulebase.h"
 
 // Required
@@ -29,7 +31,15 @@ public:
     HelpModule();
 
     // Required
-    struct returnItem processRequest(std::vector<std::string>);
+    HDTBReturnItem processRequest(std::vector<std::string>);
+
+private:
+
+    // Help-module specific calls
+    HDTBReturnItem displayAvailableCommands();
+    HDTBReturnItem displaySimpleHelp();
+    HDTBReturnItem displayCurrentOS();
+    HDTBReturnItem displayHelpMe();
 };
 
 }

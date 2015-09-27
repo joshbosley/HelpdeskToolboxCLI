@@ -35,6 +35,8 @@ struct returnItem
     }
 };
 
+typedef struct returnItem HDTBReturnItem;
+
 }
 
 #endif // HDTB_RETURNITEM
