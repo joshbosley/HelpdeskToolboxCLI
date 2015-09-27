@@ -12,16 +12,16 @@
 #include <algorithm>
 
 // The modules accessed by user
-#include "../modules/modulebox.h"
+#include "modulebox.h"
 
 // The returnable item
-#include "../modules/returnitem.h"
+#include "../modules/framework/returnitem.h"
 
 // The returnable codes
-#include "../modules/returncodes.h"
+#include "../modules/framework/returncodes.h"
 
 // Pre-defined os variables
-#include "osinfo.h"
+#include "../modules/framework/osinfo.h"
 
 
 namespace hdtoolbox

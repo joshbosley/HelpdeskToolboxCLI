@@ -31,7 +31,13 @@ HelpModule::HelpModule() :
 // Process the input, and return a returnItem
 struct returnItem HelpModule::processRequest(std::vector<std::string> args)
 {
+    // Create returnItem, and set default state
     struct returnItem ri(HDTB_RETURN_BAD, "None");
+
+    // Add arguments to module input history
+    history.push(args);
+
+    // Handle arguments passed in, and make sure to update returnItem
 
     if(args.size() == 1)
     {

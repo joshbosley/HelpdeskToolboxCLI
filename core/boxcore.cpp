@@ -89,6 +89,9 @@ returnItem BoxCore::processRequest(std::vector<std::string> args)
     if(moduleMap.find(args[0]) == moduleMap.end())
     {
         std::cout << "No module triggered by [" << args[0] << "] " << std::endl;
+        ri.retCode = HDTB_RETURN_GOOD;
+        std::cout << std::endl << "Type 'help' to figure out what to do. " << std::endl;
+
     }
     else
     {

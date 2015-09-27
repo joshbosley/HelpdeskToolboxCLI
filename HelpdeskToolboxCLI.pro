@@ -5,18 +5,27 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     core/boxcore.cpp \
-    modules/modulebase.cpp \
-    modules/helpmodule.cpp
+    modules/framework/modulebase.cpp \
+    modules/help_module/helpmodule.cpp \
+    modules/framework/errorbase.cpp \
 
 HEADERS += \
     core/boxcore.h \
-    modules/modulebase.h \
-    modules/modulebox.h \
-    modules/helpmodule.h \
+    modules/framework/modulebase.h \
+    core/modulebox.h \
     modules/moduledirectory.h \
     modules/returnitem.h \
     modules/returncodes.h \
-    core/osinfo.h
+    modules/framework/osinfo.h \
+    modules/errorbase.h \
+    modules/framework/errorbase.h \
+    core/modulebox.h \
+    modules/framework/modulebase.h \
+    modules/framework/moduledirectory.h \
+    modules/framework/osinfo.h \
+    modules/framework/returncodes.h \
+    modules/framework/returnitem.h \
+    modules/help_module/helpmodule.h
 
 DISTFILES += \
     work.todo

@@ -2,6 +2,7 @@
 #define HDTB_MODULEBASE_H
 
 #include <map>
+#include <stack>
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -11,7 +12,7 @@
 #include "moduledirectory.h"
 
 // Pre-defined os variables
-#include "../core/osinfo.h"
+#include "osinfo.h"
 
 /*
 
@@ -29,8 +30,13 @@ public:
                std::string name,
                std::string description);
 
+protected:
+
     // A map to store recognized commands
     std::map<std::string, int> commands;
+
+    // For saving command history
+    std::stack< std::vector<std::string> > history;
 
 private:
 

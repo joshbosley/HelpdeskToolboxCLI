@@ -15,7 +15,7 @@
 */
 
 // Required
-#include "modulebase.h"
+#include "../framework/modulebase.h"
 
 // Required
 namespace hdtoolbox
