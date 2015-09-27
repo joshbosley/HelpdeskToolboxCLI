@@ -8,6 +8,8 @@ SOURCES += main.cpp \
     modules/framework/modulebase.cpp \
     modules/help_module/helpmodule.cpp \
     modules/framework/errorbase.cpp \
+    modules/machine_module/machinemodule.cpp \
+    modules/machine_module/sub-modules/machinesubmoduleadd.cpp
 
 HEADERS += \
     core/boxcore.h \
@@ -26,8 +28,12 @@ HEADERS += \
     modules/framework/returncodes.h \
     modules/framework/returnitem.h \
     modules/help_module/helpmodule.h \
-    core/datatypes.h
+    core/datatypes.h \
+    modules/machine_module/machinemodule.h \
+    modules/machine_module/sub-modules/machinesubmoduleadd.h \
+    modules/machine_module/machinemoduledirectory.h
 
 DISTFILES += \
-    work.todo
+    work.todo \
+    modules/help_module/pages/directory.conf
 

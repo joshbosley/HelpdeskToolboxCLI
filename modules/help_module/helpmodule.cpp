@@ -65,6 +65,7 @@ HDTBReturnItem HelpModule::processRequest(std::vector<std::string> args)
                 break;
 
             case HDTB_HELP_COMMAND_LIST:
+                // Call to super class
                 ri = displayAvailableCommands();
                 break;
 
@@ -78,26 +79,6 @@ HDTBReturnItem HelpModule::processRequest(std::vector<std::string> args)
         }
     }
 
-    return ri;
-}
-
-HDTBReturnItem HelpModule::displayAvailableCommands()
-{
-    unsigned outputControl = 0;
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-    std::cout << std::endl << "Available help commands : " << std::endl;
-
-    for(HDTBMapIterator it = commands.begin();
-        it != commands.end(); ++it)
-    {
-        // Print off columns of 5
-        if(++outputControl % 5 == true)
-            std::cout << std::endl;
-
-        // Print command name
-        std::cout << std::setw(10) << it->first;
-    }
-    ri.retCode = HDTB_RETURN_GOOD;
     return ri;
 }
 

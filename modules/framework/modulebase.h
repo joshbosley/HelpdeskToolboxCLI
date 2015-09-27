@@ -39,6 +39,9 @@ protected:
     // For saving command history
     HDTBHistory history;
 
+    // Displaying loaded commands
+    HDTBReturnItem displayAvailableCommands();
+
 private:
 
     // Module registration information

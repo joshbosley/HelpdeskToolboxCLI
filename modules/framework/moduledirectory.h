@@ -9,6 +9,7 @@
 */
 
 #define HDTB_CODE_HELP 0
+#define HDTB_CODE_MACHINE 1
 
 #endif // HDTB_MODULEDIRECTORY
 
