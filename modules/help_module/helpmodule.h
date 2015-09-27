@@ -5,6 +5,7 @@
 #define HDTB_HELP_COMMAND_LIST 0
 #define HDTB_HELP_COMMAND_OS 1
 #define HDTB_HELP_COMMAND_ME 2
+#define HDTB_HELP_COMMAND_PAGE 3
 
 /*
         (Step 2)
@@ -35,10 +36,20 @@ public:
 
 private:
 
+    std::string manConfigFile;
+
+    // Hold manual pages
+    std::map<std::string, std::vector<std::string>> manualPages;
+
+    // Load manualpages from file
+    HDTBReturnItem loadManualPages();
+
     // Help-module specific calls
     HDTBReturnItem displaySimpleHelp();
     HDTBReturnItem displayCurrentOS();
     HDTBReturnItem displayHelpMe();
+
+    HDTBReturnItem displayManualPage(std::string moduleName);
 };
 
 }
