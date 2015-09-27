@@ -6,6 +6,7 @@ namespace hdtoolbox
 BoxCore::BoxCore()
 {
     session = false;
+    prompt = "core >>";
 
     /*
            (Step 4)
@@ -14,7 +15,8 @@ BoxCore::BoxCore()
 
     moduleMap.insert(
                 std::pair<std::string, int>
-                ("help", HDTB_CODE_HELP));
+                ("help", HDTB_CODE_HELP)
+                );
 
     // Add new modules below this line
 
@@ -26,13 +28,24 @@ void BoxCore::beginHumanInteraction()
     std::string line;
     struct returnItem ri(HDTB_RETURN_BAD,"None");
 
-    while(session && std::getline(std::cin, line))
+    while(session)
     {
-        // Split line into words
+        // Give a prompt, and retrieve input
+        std::cout << std::endl << prompt << " ";
+        std::getline(std::cin, line);
+
+        // Split input into words
         std::istringstream iss(line);
         std::vector<std::string> args{
             std::istream_iterator<std::string>{iss},
             std::istream_iterator<std::string>{}};
+
+        // See if user just wants to exit
+        if(args[0] == "exit")
+        {
+            session = false;
+            continue;
+        }
 
         // Add request to history
         history.push(args);
@@ -44,29 +57,33 @@ void BoxCore::beginHumanInteraction()
         switch(ri.retCode)
         {
         case HDTB_RETURN_GOOD:
-            std::cout << std::endl <<
-                         "[COMPLETE]"
-                      << std::endl;
+            // Do nothing at the moment if everything is good
             break;
 
         case HDTB_RETURN_BAD:
-            std::cout << "Something bad happened" << std::endl;
+            std::cout << "[HDTB_RETURN_BAD] : Message > " << ri.message << std::endl;
             break;
 
         case HDTB_RETURN_EXIT:
+            // Return HDTB_RETURN_EXIT from module to initiate exit
             session = false;
-            std::cout << std::endl << "\t Exiting " << std::endl;
             break;
+
         default:
             break;
         }
     }
+
+    // Exit message.
+    std::cout << std::endl << "Exiting. Goodbye. :-]" << std::endl << std::endl;
 }
 
 returnItem BoxCore::processRequest(std::vector<std::string> args)
 {
     // Default return
     struct returnItem ri(HDTB_RETURN_BAD, "None");
+
+    unsigned outputControl = 0;
 
     // Ensure module key exists within map.
     if(moduleMap.find(args[0]) == moduleMap.end())
@@ -87,9 +104,33 @@ returnItem BoxCore::processRequest(std::vector<std::string> args)
 
             // Set returnItem to whatever module gives us
             ri = modBox.helpModule.processRequest(args);
+
+            /*
+                    Here to break; not required for other modules.
+            */
+            if(ri.comm == 'M')
+            {
+                std::cout << std::endl << "Available modules : " << std::endl;
+
+                // List modules [Non-Help module function]
+                for(std::map<std::string, int>::iterator it = moduleMap.begin();
+                    it != moduleMap.end(); ++it)
+                {
+                    // Print off columns of 5
+                    if(++outputControl % 5 == true)
+                        std::cout << std::endl;
+
+                    // Print module name
+                    std::cout << std::setw(10) << it->first;
+                }
+            }
+
+            std::cout << std::endl;
             break;
 
         /*
+         *          Example of adding new module
+         *
         case HDTB_CODE_<NEWITEM>:
             ri = modBox.NEW_MODULE.processRequest(args);
             break;
@@ -100,14 +141,6 @@ returnItem BoxCore::processRequest(std::vector<std::string> args)
             break;
         }
     }
-
-    /*
-    std::for_each(
-                    args.cbegin(),
-                    args.cend(),
-                    [] (std::string s) {std::cout << s << std::endl;}
-                );
-    */
 
     return ri;
 }

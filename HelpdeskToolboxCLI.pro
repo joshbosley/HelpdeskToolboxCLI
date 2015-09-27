@@ -15,7 +15,8 @@ HEADERS += \
     modules/helpmodule.h \
     modules/moduledirectory.h \
     modules/returnitem.h \
-    modules/returncodes.h
+    modules/returncodes.h \
+    core/osinfo.h
 
 DISTFILES += \
     work.todo
