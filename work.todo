@@ -11,7 +11,6 @@ Core functionality :
 3. Create screen handler that can dress up, and mess with the console
    crossplatorms
 
-
 Module creation :
 
     Disk formatting
@@ -19,3 +18,39 @@ Module creation :
     Registry editor
     Network troubleshooter/ scanner/
     Standard file backup
+
+Module edits:
+
+1. Complete man-page lookup within help module using
+
+2. Machine module
+
+    Complete the submodules one-by-one as to not get lost
+    and foget key elements.
+
+    Machine Sub-Modules
+
+    add        - Sub module created, not yet complete
+                    - Domain
+                    - Workgroup
+                    - Administration
+
+    edit       - No sub module class create yet
+                    - Domain
+                    - Workgroup
+                    - Administration
+
+    remove     - No sub module class create yet
+                    - Domain
+                    - Workgroup
+                    - Administration
+
+    perform    - No sub module class create yet
+                    - Standard Cleanup
+                    - Data backup
+
+    get        - No sub module class create yet
+                    - RAM
+                    - HDD
+                    - OS
+

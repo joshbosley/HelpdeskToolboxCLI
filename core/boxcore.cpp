@@ -20,6 +20,11 @@ BoxCore::BoxCore()
 
     // Add new modules below this line
 
+    moduleMap.insert(
+                HDTBMapItem
+                ("machine", HDTB_CODE_MACHINE)
+                );
+
 }
 
 void BoxCore::beginHumanInteraction()
@@ -131,6 +136,10 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
             }
 
             std::cout << std::endl;
+            break;
+
+        case HDTB_CODE_MACHINE:
+            ri = modBox.machineModule.processRequest(args);
             break;
 
         /*

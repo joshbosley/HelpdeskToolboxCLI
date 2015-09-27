@@ -36,7 +36,6 @@ public:
 private:
 
     // Help-module specific calls
-    HDTBReturnItem displayAvailableCommands();
     HDTBReturnItem displaySimpleHelp();
     HDTBReturnItem displayCurrentOS();
     HDTBReturnItem displayHelpMe();
