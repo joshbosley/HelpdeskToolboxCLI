@@ -20,6 +20,12 @@ public:
 
     // Required
     HDTBReturnItem processRequest(std::vector<std::string>);
+
+private:
+
+    HDTBReturnItem addToDomain(std::string);
+    HDTBReturnItem addToWorkGroup(std::string);
+    HDTBReturnItem addAnAdministrator(std::string);
 };
 
 }

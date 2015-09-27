@@ -68,7 +68,7 @@ void BoxCore::beginHumanInteraction()
             break;
 
         case HDTB_RETURN_BAD:
-            std::cout << "[HDTB_RETURN_BAD] : Message > " << ri.message << std::endl;
+            std::cout << std::endl << "[HDTB_RETURN_BAD] : Message > " << ri.message << std::endl;
             break;
 
         case HDTB_RETURN_EXIT:
@@ -110,6 +110,10 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
 
         switch(moduleMap.at(args[0]))
         {
+
+        /*
+                    Help Module
+        */
         case HDTB_CODE_HELP:
 
             // Set returnItem to whatever module gives us
@@ -138,6 +142,9 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
             std::cout << std::endl;
             break;
 
+        /*
+                        Machine Module
+        */
         case HDTB_CODE_MACHINE:
             ri = modBox.machineModule.processRequest(args);
             break;
