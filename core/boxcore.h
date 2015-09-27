@@ -11,17 +11,20 @@
 #include <iostream>
 #include <algorithm>
 
+// HTDB specific datatypes
+#include "datatypes.h"
+
 // The modules accessed by user
-#include "../modules/modulebox.h"
+#include "modulebox.h"
 
 // The returnable item
-#include "../modules/returnitem.h"
+#include "../modules/framework/returnitem.h"
 
 // The returnable codes
-#include "../modules/returncodes.h"
+#include "../modules/framework/returncodes.h"
 
 // Pre-defined os variables
-#include "osinfo.h"
+#include "../modules/framework/osinfo.h"
 
 
 namespace hdtoolbox
@@ -44,16 +47,16 @@ private:
     moduleBox modBox;
 
     // For translating arguments to module ids
-    std::map<std::string, int> moduleMap;
+    HDTBStandardMap moduleMap;
 
     // Control the session
     bool session;
 
     // For saving command history
-    std::stack< std::vector<std::string> > history;
+    HDTBHistory history;
 
     // Process input
-    struct returnItem processRequest(std::vector<std::string>);
+    HDTBReturnItem processRequest(std::vector<std::string>);
 
 };
 

@@ -9,7 +9,7 @@
 
 // BEGIN_MODULES_INCLUDES
 
-#include "helpmodule.h"
+#include "../modules/help_module/helpmodule.h"
 
 // END_MODULES_INCLUDES
 
@@ -19,7 +19,7 @@ namespace hdtoolbox
     {
         HelpModule helpModule;
 
-
+        // Add modules here!
     };
 
     typedef struct moduleBox moduleBox;

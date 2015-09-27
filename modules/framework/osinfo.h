@@ -16,7 +16,7 @@
 #elif __APPLE__
 
     #define HDTB_OS "MAC_OS"
-    #define HDTB_OS_USER_HOME '$HOME'
+    #define HDTB_OS_USER_HOME "$HOME"
 
 #else
 
