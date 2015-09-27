@@ -57,15 +57,21 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
     {
 
     case HDTB_MACHINE_CMD_DOMAIN:
-        ri.message = "NOT YET CREATED";
+
+        if(HDTB_OS == "WIN_OS")
+            ri = addToDomain(args[2]);
+        else if (HDTB_OS == "MAC_OS")
+            ri.message = "Operation not supported on MAC OS";
+        else
+            ri.message = "Unknown OS, operation not supported";
         break;
 
     case HDTB_MACHINE_CMD_WORKGROUP:
-        ri.message = "NOT YET CREATED";
+        ri = addToWorkGroup(args[2]);
         break;
 
     case HDTB_MACHINE_CMD_ADMINISTRATOR:
-        ri.message = "NOT YET CREATED";
+        ri = addAnAdministrator(args[2]);
         break;
 
     default:
@@ -74,6 +80,51 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
 
     return ri;
 
+}
+
+/*
+
+                Add the machine to a domain
+
+*/
+HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    std::cout << " DOMAIN : " << domain;
+
+    ri.message = "Not yet created";
+    return ri;
+}
+
+/*
+
+                Add the machine to a workgroup
+
+*/
+HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string group)
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    std::cout << std::endl << "Add to group : " << group << std::endl;
+
+    ri.message = "Not yet created";
+    return ri;
+}
+
+/*
+
+                Add an administrator
+
+*/
+HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    std::cout << std::endl << "Add admin : " << accountName << std::endl;
+
+    ri.message = "Not yet created";
+    return ri;
 }
 
 }
