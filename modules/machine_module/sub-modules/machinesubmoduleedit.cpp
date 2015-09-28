@@ -74,7 +74,12 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
         }
         else
         {
-            ri = editDomain(args[2]);
+            if(HDTB_OS == "WIN_OS")
+                ri = editDomain(args[2]);
+            else if (HDTB_OS == "MAC_OS")
+                ri.message = "Operation not supported on MAC OS";
+            else
+                ri.message = "Unknown OS, operation not supported";
         }
         break;
 
@@ -141,7 +146,6 @@ HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 
     ri.message = "Not yet created";
     return ri;
-
 }
 
 HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
@@ -152,7 +156,6 @@ HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 
     ri.message = "Not yet created";
     return ri;
-
 }
 
 HDTBReturnItem MachineSubModuleEdit::editUAC(std::string state)
