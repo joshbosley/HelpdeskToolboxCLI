@@ -12,6 +12,7 @@
 // Sub-Modules
 #include "sub-modules/machinesubmoduleadd.h"
 #include "sub-modules/machinesubmoduleedit.h"
+#include "sub-modules/machinesubmoduleremove.h"
 
 // Required
 namespace hdtoolbox
@@ -31,6 +32,7 @@ private:
     // so they will be divided into sub-modules, and added here
     MachineSubModuleAdd add;
     MachineSubModuleEdit edit;
+    MachineSubModuleRemove remove;
 
 };
 
