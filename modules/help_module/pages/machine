@@ -1,0 +1,28 @@
+Machine
+|
+|----- Submodule : add
+|                    |
+|                    |--Domain                  [domain] <name>
+|                    |--Workgroup               [workgroup] <name>
+|                    |--Admin Account           [admin] <name>
+|
+|----- Submodule : edit
+|                    |
+|                    |--Domain                  [domain] <name>
+|                    |--Workgroup               [workgroup] <name>
+|                    |--Toggle UAC              [uac] <on/off>
+|                    |--Computer Name           [cname] <name>
+|                    |--IE Version              [ie<version>]
+|
+|----- Submodule : remove
+|                    |
+|                    |--Domain                  [domain]
+|                    |--Workgroup               [workgroup]
+|                    |--User Accounts           [account] <name>
+|
+|----- Submodule : perform
+|                    |
+|                    |--Standard Cleanup        [cleanup]
+|                    |--Data Copy               [dcopy] <source> <destination>
+|                    |--Windows Updates         [winupdate]
+|                    |--Scrub all user data     [scrub]

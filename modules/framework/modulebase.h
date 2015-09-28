@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <fstream>
 #include <iostream>
 #include "returnitem.h"
 #include "returncodes.h"

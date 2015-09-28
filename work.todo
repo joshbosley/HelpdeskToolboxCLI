@@ -21,7 +21,11 @@ Module creation :
 
 Module edits:
 
-1. Complete man-page lookup within help module using
+[COMPLETE] - Want to change a bit
+1. Complete man-page lookup within help module
+
+    - Need to copy help_module/pages to programs current working directory
+
 
 2. Machine module
 
@@ -30,25 +34,31 @@ Module edits:
 
     Machine Sub-Modules
 
+    [Under construction]
     add        - Sub module created, not yet complete
                     - Domain
                     - Workgroup
                     - Administration
 
+    [Not yet created]
     edit       - No sub module class create yet
                     - Domain
                     - Workgroup
                     - Administration
+                    ration
 
+    [Not yet created]
     remove     - No sub module class create yet
                     - Domain
                     - Workgroup
                     - Administration
 
+    [Not yet created]
     perform    - No sub module class create yet
                     - Standard Cleanup
                     - Data backup
 
+    [Not yet created]
     get        - No sub module class create yet
                     - RAM
                     - HDD

@@ -29,6 +29,17 @@ HelpModule::HelpModule() :
                 HDTBMapItem
                 ("me", HDTB_HELP_COMMAND_ME)
                 );
+
+    commands.insert(
+                HDTBMapItem
+                ("page", HDTB_HELP_COMMAND_PAGE)
+                );
+
+    // END REQUIRED
+
+    // Config file for manual pages
+    manConfigFile = "./pages/directory.conf";
+    loadManualPages();
 }
 
 // Process the input, and return a returnItem
@@ -73,12 +84,79 @@ HDTBReturnItem HelpModule::processRequest(std::vector<std::string> args)
                 ri = displayHelpMe();
                 break;
 
+            case HDTB_HELP_COMMAND_PAGE:
+                if(args.size() == 3)
+                    ri = displayManualPage(args[2]);
+                else
+                {
+                    ri.retCode = HDTB_RETURN_BAD;
+                    ri.message = "No module name given";
+                    return ri;
+                }
+                break;
+
             default:
                 break;
             }
         }
     }
 
+    return ri;
+}
+
+HDTBReturnItem HelpModule::loadManualPages()
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+    manualPages.clear();
+
+    std::ifstream file;
+    std::string manFileName;
+    file.open(manConfigFile);
+
+    if(file.is_open())
+    {
+        // Open config file and get the names of the modules installed
+        while(!file.eof())
+        {
+            // Get file name from config
+            std::getline(file, manFileName);
+
+            // Open the file pulled from config
+            std::string currLine;
+            std::ifstream currManFile;
+            std::vector<std::string> manContent;
+            currManFile.open("pages/" + manFileName);
+
+            if(currManFile.is_open())
+            {
+                // Copy its contents into a vector
+                while(!currManFile.eof())
+                {
+                    std::getline(currManFile, currLine);
+                    manContent.push_back(currLine);
+                }
+
+                // Load it into manualPages
+                manualPages.insert(
+                            std::pair<std::string, std::vector<std::string>>
+                            (manFileName, manContent)
+                            );
+
+                // Clean everything, and have a cup of tea.
+                manContent.clear();
+            }
+            else
+            {
+                ri.message = "Page(s) file not loaded.";
+            }
+            currManFile.close();
+        }
+    }
+    else
+    {
+        ri.message = "pages/directory.conf not found. Check your cwd.";
+    }
+    file.close();
     return ri;
 }
 
@@ -120,6 +198,31 @@ HDTBReturnItem HelpModule::displayHelpMe()
 
     // Return showing the simple help, which will tell the core to show modules
     return displaySimpleHelp();
+}
+
+HDTBReturnItem HelpModule::displayManualPage(std::string moduleName)
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    std::cout << "Requesting manual for " << moduleName << std::endl;
+    if(manualPages.find(moduleName) == manualPages.end())
+    {
+        ri.message = "No manual found for [" + moduleName + "] ";
+        return ri;
+    }
+    else
+    {
+        std::cout << std::endl << "Showing manual for : [" << moduleName << "]" << std::endl;
+        // manualPages.at(moduleName) [returns]-> Vector<string>
+        for( std::vector<std::string>::iterator it = manualPages.at(moduleName).begin();
+             it < manualPages.at(moduleName).end();
+             it++)
+        {
+            std::cout << *it << std::endl;
+        }
+        ri.retCode = HDTB_RETURN_GOOD;
+    }
+    return ri;
 }
 
 }
