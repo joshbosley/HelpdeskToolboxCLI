@@ -13,6 +13,8 @@
 #include "sub-modules/machinesubmoduleadd.h"
 #include "sub-modules/machinesubmoduleedit.h"
 #include "sub-modules/machinesubmoduleremove.h"
+#include "sub-modules/machinesubmoduleperform.h"
+#include "sub-modules/machinesubmoduleget.h"
 
 // Required
 namespace hdtoolbox
@@ -33,6 +35,8 @@ private:
     MachineSubModuleAdd add;
     MachineSubModuleEdit edit;
     MachineSubModuleRemove remove;
+    MachineSubModulePerform perform;
+    MachineSubModuleGet get;
 
 };
 

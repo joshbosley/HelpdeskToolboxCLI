@@ -88,11 +88,17 @@ HDTBReturnItem MachineModule::processRequest(std::vector<std::string> args)
         break;
 
     case HDTB_MACHINE_PERFORM:
-        ri.message = "NOT YET CREATED";
+        // Remove first arg - No longer required
+        args.erase(args.begin());
+
+        ri = perform.processRequest(args);
         break;
 
     case HDTB_MACHINE_GET:
-        ri.message = "NOT YET CREATED";
+        // Remove first arg - No longer required
+        args.erase(args.begin());
+
+        ri = get.processRequest(args);
         break;
 
     default:
