@@ -9,7 +9,8 @@ SOURCES += main.cpp \
     modules/help_module/helpmodule.cpp \
     modules/framework/errorbase.cpp \
     modules/machine_module/machinemodule.cpp \
-    modules/machine_module/sub-modules/machinesubmoduleadd.cpp
+    modules/machine_module/sub-modules/machinesubmoduleadd.cpp \
+    modules/machine_module/sub-modules/machinesubmoduleedit.cpp
 
 HEADERS += \
     core/boxcore.h \
@@ -31,7 +32,8 @@ HEADERS += \
     core/datatypes.h \
     modules/machine_module/machinemodule.h \
     modules/machine_module/sub-modules/machinesubmoduleadd.h \
-    modules/machine_module/machinemoduledirectory.h
+    modules/machine_module/machinemoduledirectory.h \
+    modules/machine_module/sub-modules/machinesubmoduleedit.h
 
 DISTFILES += \
     work.todo \

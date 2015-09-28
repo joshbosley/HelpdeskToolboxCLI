@@ -31,7 +31,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
-    // Make sure commands are given
+    // Make sure commands are given, and if they are if there are enough
     if(args.size() == 1)
     {
         // Call to super class
@@ -52,26 +52,50 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         return ri;
     }
 
+
     //Handle command
     switch(commands[args[1]])
     {
 
     case HDTB_MACHINE_CMD_DOMAIN:
-
-        if(HDTB_OS == "WIN_OS")
-            ri = addToDomain(args[2]);
-        else if (HDTB_OS == "MAC_OS")
-            ri.message = "Operation not supported on MAC OS";
+        if (args.size() != 3)
+        {
+            ri.message = "No domain name given";
+            return ri;
+        }
         else
-            ri.message = "Unknown OS, operation not supported";
+        {
+            if(HDTB_OS == "WIN_OS")
+                ri = addToDomain(args[2]);
+            else if (HDTB_OS == "MAC_OS")
+                ri.message = "Operation not supported on MAC OS";
+            else
+                ri.message = "Unknown OS, operation not supported";
+        }
         break;
 
     case HDTB_MACHINE_CMD_WORKGROUP:
-        ri = addToWorkGroup(args[2]);
+        if (args.size() != 3)
+        {
+            ri.message = "No workgroup name given";
+            return ri;
+        }
+        else
+        {
+            ri = addToWorkGroup(args[2]);
+        }
         break;
 
     case HDTB_MACHINE_CMD_ADMINISTRATOR:
-        ri = addAnAdministrator(args[2]);
+        if (args.size() != 3)
+        {
+            ri.message = "No admin name given";
+            return ri;
+        }
+        else
+        {
+            ri = addAnAdministrator(args[2]);
+        }
         break;
 
     default:

@@ -11,6 +11,7 @@
 
 // Sub-Modules
 #include "sub-modules/machinesubmoduleadd.h"
+#include "sub-modules/machinesubmoduleedit.h"
 
 // Required
 namespace hdtoolbox
@@ -29,6 +30,8 @@ private:
     // The individual functions may get quite large,
     // so they will be divided into sub-modules, and added here
     MachineSubModuleAdd add;
+    MachineSubModuleEdit edit;
+
 };
 
 }

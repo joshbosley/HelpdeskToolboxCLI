@@ -204,6 +204,16 @@ HDTBReturnItem HelpModule::displayManualPage(std::string moduleName)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
+    if(manualPages.size() == 0)
+    {
+        std::cout << std::endl << "There doesn't appear to be any manual pages. "
+                                  "Is the pages folder containing the "
+                                  "data within the current working directory?" <<
+                     std::endl;
+        ri.message = "No manual pages found";
+        return ri;
+    }
+
     std::cout << "Requesting manual for " << moduleName << std::endl;
     if(manualPages.find(moduleName) == manualPages.end())
     {
