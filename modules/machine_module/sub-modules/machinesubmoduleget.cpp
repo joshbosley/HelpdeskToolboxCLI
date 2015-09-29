@@ -89,17 +89,21 @@ HDTBReturnItem MachineSubModuleGet::getRAM()
 
     if(HDTB_OS == "MAC_OS")
     {
+#ifdef __APPLE__
         unsigned long long memsize;
         size_t len = sizeof(memsize);
         sysctlbyname("hw.memsize.brand_string", &memsize, &len, NULL, 0);
         std::cout << std::endl << len << " GB" << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else if (HDTB_OS == "WIN_OS")
     {
+#ifdef _WIN32
         std::cout << std::endl << system("wmic memphysical get MaxCapacity")
                   << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else
     {
@@ -114,6 +118,7 @@ HDTBReturnItem MachineSubModuleGet::getHDD()
 
     if(HDTB_OS == "MAC_OS")
     {
+#ifdef __APPLE__
         char *file = (char*)"/";
         struct statvfs buf;
         if (!statvfs(file, &buf))
@@ -132,13 +137,16 @@ HDTBReturnItem MachineSubModuleGet::getHDD()
         {
             ri.message = "Could not retrieve disk information on your MAC OS";
         }
+#endif
     }
     else if (HDTB_OS == "WIN_OS")
     {
+#ifdef _WIN32
         std::cout << std::endl
                   << system("wmic logicaldisk get Name, FreeSpace, Description")
                   << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else
     {
@@ -153,16 +161,20 @@ HDTBReturnItem MachineSubModuleGet::getCPU()
 
     if(HDTB_OS == "MAC_OS")
     {
+#ifdef __APPLE__
         char buf[100];
         size_t buflen = 100;
         sysctlbyname("machdep.cpu.brand_string", &buf, &buflen, NULL, 0);
         std::cout << std::endl << buf << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else if (HDTB_OS == "WIN_OS")
     {
+#ifdef _WIN32
         std::cout << std::endl << system("wmic cpu get Name") << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else
     {
@@ -177,13 +189,17 @@ HDTBReturnItem MachineSubModuleGet::getOS()
 
     if(HDTB_OS == "MAC_OS")
     {
+#ifdef __APPLE__
         std::cout << std::endl << system("sw_vers") << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else if (HDTB_OS == "WIN_OS")
     {
+#ifdef _WIN32
         std::cout << std::endl << system("wmic os get Caption, Version") << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
+#endif
     }
     else
     {
