@@ -39,7 +39,8 @@ HEADERS += \
     modules/machine_module/sub-modules/machinesubmoduleedit.h \
     modules/machine_module/sub-modules/machinesubmoduleremove.h \
     modules/machine_module/sub-modules/machinesubmoduleperform.h \
-    modules/machine_module/sub-modules/machinesubmoduleget.h
+    modules/machine_module/sub-modules/machinesubmoduleget.h \
+    modules/framework/osincludes.h
 
 DISTFILES += \
     work.todo \
