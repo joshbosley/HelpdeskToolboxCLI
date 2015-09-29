@@ -3,7 +3,7 @@
 
 // OS information
 #ifdef _WIN32
-    #define HDTB_OS "WIN_OS
+    #define HDTB_OS "WIN_OS"
     #define HDTB_OS_ROOT "%SYSTEMROOT%"
     #define HDTB_OS_DRIVE "%SYSTEMDRIVE%"
     #define HDTB_OS_PROGRAM_INSTALLS "%ProgramFiles%"
