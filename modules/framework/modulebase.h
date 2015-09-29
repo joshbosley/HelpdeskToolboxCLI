@@ -15,6 +15,7 @@
 
 // Pre-defined os variables
 #include "osinfo.h"
+#include "osincludes.h"
 
 /*
 
