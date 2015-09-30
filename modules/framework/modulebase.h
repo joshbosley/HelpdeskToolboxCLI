@@ -7,6 +7,7 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include "returnitem.h"
 #include "returncodes.h"

@@ -41,21 +41,35 @@ void BoxCore::beginHumanInteraction()
         std::cout << std::endl << prompt << " ";
         std::getline(std::cin, line);
 
+        // Make sure that there was actually some input
+        if(line == "" )
+            continue;
+
         // Split input into words
         std::istringstream iss(line);
         std::vector<std::string> args{
             std::istream_iterator<std::string>{iss},
             std::istream_iterator<std::string>{}};
 
-        // See if user just wants to exit
+        // Add request to history
+        history.push(args);
+
+        // See if user wants to exit or clear the screen
         if(args[0] == "exit")
         {
             session = false;
             continue;
         }
-
-        // Add request to history
-        history.push(args);
+        else if(args[0] == "clear")
+        {
+#ifdef _WIN32
+            system("cls");
+#else
+            system("clear");
+#endif
+            // Once the clear command has been done, skip processing
+            continue;
+        }
 
         // Process request
         ri = processRequest(args);
