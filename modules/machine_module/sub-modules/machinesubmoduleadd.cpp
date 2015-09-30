@@ -114,10 +114,15 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
 HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+    ri.message = "None";
 
+#ifdef _WIN32
     std::cout << " DOMAIN : " << domain;
 
-    ri.message = "Not yet created";
+    ri.message = "Not yet created - script being made by Tyler";
+#else
+    ri.message = "Only supported on Windows OS";
+#endif
     return ri;
 }
 
@@ -129,10 +134,15 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string group)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+    ri.message = "None";
 
+#ifdef _WIN32
     std::cout << std::endl << "Add to group : " << group << std::endl;
 
-    ri.message = "Not yet created";
+    ri.message = "Not yet created - script being made by Tyler";
+#else
+    ri.message = "Only supported on Windows OS";
+#endif
     return ri;
 }
 
@@ -145,9 +155,27 @@ HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
-    std::cout << std::endl << "Add admin : " << accountName << std::endl;
+#ifdef _WIN32
 
-    ri.message = "Not yet created";
+    // Come up with a better password, generate something
+    std::string createUser = "net user /add " + accountName + " hdtb8675309";
+    std::string addUser = "net localgroup administrators " + accountName + " /add";
+
+    system(createUser);
+    system(addUser);
+
+#elif __APPLE__
+
+    system( ("dscl . -create /Users/" + accountName).c_str() );
+    system( ("dscl . -create /Users/" + accountName + " UserShell /bin/bash").c_str() );
+    system( ("dscl . -create /Users/" + accountName + " RealName 'HDTBAdmin'").c_str() );
+    system( ("dscl . -create /Users/" + accountName + " UniqueID '1010'").c_str() );
+    system( ("dscl . -create /Users/" + accountName + " PrimaryGroupID 80").c_str() );
+    system( ("dscl . -create /Users/" + accountName + " NFSHomeDirectory /Users/" + accountName).c_str()  );
+
+#endif
+
+    std::cout << std::endl << "Created admin user : " << accountName << std::endl;
     return ri;
 }
 

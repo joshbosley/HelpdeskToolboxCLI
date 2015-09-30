@@ -45,5 +45,6 @@ HEADERS += \
 DISTFILES += \
     work.todo \
     modules/help_module/pages/directory.conf \
-    modules/help_module/pages/machine
+    modules/help_module/pages/machine \
+    lib/machine/example
 
