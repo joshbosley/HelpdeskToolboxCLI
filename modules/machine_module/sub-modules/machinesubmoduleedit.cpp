@@ -141,10 +141,29 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
 HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+#ifdef _WIN32
 
-    std::cout << std::endl << "Add to domain : " << domain << std::endl;
+    ri.message = "None";
 
-    ri.message = "Not yet created";
+    std::cout << " DOMAIN : " << domain;
+
+    std::string username, password;
+
+    std::cout << std::endl << "Administrator Username : ";
+    std::cin >> username;
+
+    std::cout << std::endl << "Administrator Password : ";
+    std::cin >> password;
+    std::cout << domain << " " << username << " " << password << std::endl;
+
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    system(exec.c_str());
+#else
+    ri.message = "Only supported on Windows OS";
+#endif
     return ri;
 }
 
@@ -154,7 +173,18 @@ HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 
     std::cout << std::endl << "Change to workgroup : " << workgroup << std::endl;
 
-    ri.message = "Not yet created";
+#ifdef _WIN32
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
+    system(exec.c_str());
+
+    ri.retCode = HDTB_RETURN_GOOD;
+
+#else
+    ri.message = "Only supported on Windows OS";
+#endif
     return ri;
 }
 
@@ -173,9 +203,18 @@ HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
-    std::cout << std::endl << "Change name : " << name << std::endl;
+#ifdef _WIN32
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    ri.message = "Not yet created";
+    std::string exec = ("start powershell.exe lib\\machine\\editCname.ps1 " + name + "\n" );
+    system(exec.c_str());
+
+    ri.retCode = HDTB_RETURN_GOOD;
+
+#else
+    ri.message = "Not yet created for MAC OS";
+#endif
     return ri;
 
 }

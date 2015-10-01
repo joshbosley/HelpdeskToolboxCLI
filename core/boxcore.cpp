@@ -24,7 +24,6 @@ BoxCore::BoxCore()
                 HDTBMapItem
                 ("machine", HDTB_CODE_MACHINE)
                 );
-
 }
 
 void BoxCore::beginHumanInteraction()

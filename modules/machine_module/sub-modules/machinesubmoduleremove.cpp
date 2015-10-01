@@ -64,25 +64,18 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
         }
         else
         {
-            if(HDTB_OS == "WIN_OS")
+#ifdef _WIN32
                 ri = remDomain(args[2]);
-            else if (HDTB_OS == "MAC_OS")
+#elif __APPLE__
                 ri.message = "Operation not supported on MAC OS";
-            else
+#else
                 ri.message = "Unknown OS, operation not supported";
+#endif
         }
         break;
 
     case HDTB_MACHINE_CMD_WORKGROUP:
-        if (args.size() != 3)
-        {
-            ri.message = "No workgroup name given";
-            return ri;
-        }
-        else
-        {
-            ri = remWorkGroup(args[2]);
-        }
+            ri = remWorkGroup();
         break;
 
     case HDTB_MACHINE_CMD_UNAME:
@@ -110,17 +103,39 @@ HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
 
     std::cout << std::endl << "Remove from domain : " << domain << std::endl;
 
-    ri.message = "Not yet created";
+    std::string username, password;
+
+    std::cout << std::endl << "Administrator Username : ";
+    std::cin >> username;
+
+    std::cout << std::endl << "Administrator Password : ";
+    std::cin >> password;
+    std::cout << domain << " " << username << " " << password << std::endl;
+
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    system(exec.c_str());
     return ri;
 }
 
-HDTBReturnItem MachineSubModuleRemove::remWorkGroup(std::string workgroup)
+HDTBReturnItem MachineSubModuleRemove::remWorkGroup()
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
-    std::cout << std::endl << "Remove from workgroup : " << workgroup << std::endl;
+#ifdef _WIN32
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    ri.message = "Not yet created";
+    std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 HDTBGROUP\n" );
+    system(exec.c_str());
+
+    ri.retCode = HDTB_RETURN_GOOD;
+
+#else
+    ri.message = "Only supported on Windows OS";
+#endif
     return ri;
 }
 
@@ -128,10 +143,25 @@ HDTBReturnItem MachineSubModuleRemove::remAccount(std::string account)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
-    std::cout << std::endl << "Remove account : " << account << std::endl;
+ #ifdef _WIN32
 
-    ri.message = "Not yet created";
+    std::cout << std::endl << "Remove account : " << account << std::endl;
+    std::string removeUser = "net user " + account + " /del";
+
+    system(removeUser.c_str());
+
+    ri.retCode = HDTB_RETURN_GOOD;
+
+#elif __APPLE__
+
+    //Apple has a weird way of removing users with dscl
+    //Avoiding for now
+
+    ri.message = "Not yet created"
+
+#endif
     return ri;
+
 }
 
 }

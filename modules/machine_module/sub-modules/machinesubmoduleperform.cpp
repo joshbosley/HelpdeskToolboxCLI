@@ -30,6 +30,11 @@ MachineSubModulePerform::MachineSubModulePerform() :
                 HDTBMapItem
                 ("scrub", HDTB_MACHINE_CMD_SCRUB)
                 );
+
+    commands.insert(
+                HDTBMapItem
+                ("fixjava", HDTB_MACHINE_CMD_FIXJAVA)
+                );
 }
 
 HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<std::string> args)
@@ -80,16 +85,20 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
         break;
 
     case HDTB_MACHINE_CMD_WUPDATE:
-        if(HDTB_OS == "WIN_OS")
+#ifdef _WIN32
             ri = winupdate();
-        else
+#else
             ri.message = "Operation is windows specific.";
+#endif
         break;
 
     case HDTB_MACHINE_CMD_SCRUB:
         ri = scrub();
         break;
 
+    case HDTB_MACHINE_CMD_FIXJAVA:
+        ri = fixJava();
+        break;
     default:
         break;
     }
@@ -103,19 +112,14 @@ HDTBReturnItem MachineSubModulePerform::cleanup()
 
     std::cout << std::endl << "Perform cleanup... " << std::endl;
 
-#ifdef __APPLE__
+#ifdef _WIN32
 
 
-
+#elif __APPLE__
     // Do this last
     system("sudo rm -rf ~/.Trash/*");
 
-#elif _WIN32
-
 #endif
-
-
-
 
     ri.message = "Not yet created";
     return ri;
@@ -153,6 +157,23 @@ HDTBReturnItem MachineSubModulePerform::scrub()
     std::cout << std::endl << "Perform scrub" << std::endl;
 
     ri.message = "Not yet created";
+    return ri;
+}
+
+HDTBReturnItem MachineSubModulePerform::fixJava()
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+#ifdef _WIN32
+
+    system("start lib\\machine\\fixJava.bat");
+    ri.retCode = HDTB_RETURN_GOOD;
+
+#elif __APPLE__
+    ri.message = "Not yet created for MACOS"
+#else
+    ri.message = "Not supported on this OS";
+#endif
     return ri;
 }
 
