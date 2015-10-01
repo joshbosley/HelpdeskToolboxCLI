@@ -21,13 +21,7 @@ Module creation :
 
 Module edits:
 
-[COMPLETE] - Want to change a bit
-1. Complete man-page lookup within help module
-
-    - Need to copy help_module/pages to programs current working directory
-
-
-2. Machine module
+1. Machine module
 
     Complete the submodules one-by-one as to not get lost
     and foget key elements.
@@ -58,7 +52,7 @@ Module edits:
     perform    - Sub module class created
                     - Standard Cleanup
                     - Data backup
-                    - javafix
+                    - javafix                           [COMPLETE]
 
     [COMPLETE]
     get        - Sub module class created
