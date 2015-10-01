@@ -34,33 +34,35 @@ Module edits:
 
     Machine Sub-Modules
 
-    [Under construction]
-    add        - Sub module created, not yet complete
-                    - Domain
-                    - Workgroup
-                    - Administration
+    [COMPLETE]
+    add        - Sub module created
+                    - Domain                            [COMPLETE]
+                    - Workgroup                         [COMPLETE]
+                    - Administrator                     [COMPLETE]
 
-    [Not yet created]
-    edit       - No sub module class create yet
-                    - Domain
-                    - Workgroup
-                    - Administration
-                    ration
+    [Under Construction]
+    edit       - Sub module class created
+                    - Domain                            [COMPLETE]
+                    - Workgroup                         [COMPLETE]
+                    - Computer Name                     [COMPLETE]
+                    - UAC
+                    - IE
 
-    [Not yet created]
-    remove     - No sub module class create yet
-                    - Domain
-                    - Workgroup
-                    - Administration
+    [COMPLETE]
+    remove     - Sub module class created
+                    - Domain                            [COMPLETE]
+                    - Workgroup                         [COMPLETE]
+                    - Administration                    [COMPLETE]
 
-    [Not yet created]
-    perform    - No sub module class create yet
+    [Under Construction]
+    perform    - Sub module class created
                     - Standard Cleanup
                     - Data backup
+                    - javafix
 
-    [Not yet created]
-    get        - No sub module class create yet
-                    - RAM
-                    - HDD
-                    - OS
+    [COMPLETE]
+    get        - Sub module class created
+                    - RAM                               [COMPLETE]
+                    - HDD                               [COMPLETE]
+                    - OS                                [COMPLETE]
 

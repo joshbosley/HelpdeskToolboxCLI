@@ -3,6 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+QMAKE_CXXFLAGS += -libgcc
+
 SOURCES += main.cpp \
     core/boxcore.cpp \
     modules/framework/modulebase.cpp \
@@ -46,5 +48,13 @@ DISTFILES += \
     work.todo \
     modules/help_module/pages/directory.conf \
     modules/help_module/pages/machine \
-    lib/machine/example
+    lib/machine/example \
+    lib/machine/adddomain.ps1 \
+    lib/machine/adddomainfinal.bat \
+    lib/machine/editDomain.ps1 \
+    lib/machine/editWorkgroup.ps1 \
+    lib/machine/removeDomain.ps1 \
+    lib/machine/editCname.ps1 \
+    lib/machine/deployment.properties \
+    lib/machine/fixJava.bat
 

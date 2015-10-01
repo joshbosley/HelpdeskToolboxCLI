@@ -65,12 +65,15 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         }
         else
         {
-            if(HDTB_OS == "WIN_OS")
-                ri = addToDomain(args[2]);
-            else if (HDTB_OS == "MAC_OS")
-                ri.message = "Operation not supported on MAC OS";
-            else
-                ri.message = "Unknown OS, operation not supported";
+
+#ifdef _WIN32
+            ri = addToDomain(args[2]);
+
+#elif __APPLE__
+            ri.message = "Operation not supported on MAC OS";
+#else
+            ri.message = "Unknown OS, operation not supported";
+#endif
         }
         break;
 
@@ -119,7 +122,22 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 #ifdef _WIN32
     std::cout << " DOMAIN : " << domain;
 
-    ri.message = "Not yet created - script being made by Tyler";
+    std::string username, password;
+
+    std::cout << std::endl << "Administrator Username : ";
+    std::cin >> username;
+
+    std::cout << std::endl << "Administrator Password : ";
+    std::cin >> password;
+    std::cout << domain << " " << username << " " << password << std::endl;
+
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    system(exec.c_str());
+
+    ri.retCode = HDTB_RETURN_GOOD;
 #else
     ri.message = "Only supported on Windows OS";
 #endif
@@ -131,15 +149,22 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
                 Add the machine to a workgroup
 
 */
-HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string group)
+HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string workgroup)
 {
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     ri.message = "None";
 
-#ifdef _WIN32
-    std::cout << std::endl << "Add to group : " << group << std::endl;
+    std::cout << std::endl << "Add to workgroup : " << workgroup << std::endl;
 
-    ri.message = "Not yet created - script being made by Tyler";
+#ifdef _WIN32
+
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
+    system(exec.c_str());
+    ri.retCode = HDTB_RETURN_GOOD;
+
 #else
     ri.message = "Only supported on Windows OS";
 #endif
@@ -161,8 +186,8 @@ HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
     std::string createUser = "net user /add " + accountName + " hdtb8675309";
     std::string addUser = "net localgroup administrators " + accountName + " /add";
 
-    system(createUser);
-    system(addUser);
+    system(createUser.c_str());
+    system(addUser.c_str());
 
     std::cout << "Your password is : " << "hdtb8675309" << std::endl;
 

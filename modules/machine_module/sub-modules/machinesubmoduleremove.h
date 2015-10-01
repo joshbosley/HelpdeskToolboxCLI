@@ -22,7 +22,7 @@ public:
 private:
 
     HDTBReturnItem remDomain(std::string);
-    HDTBReturnItem remWorkGroup(std::string);
+    HDTBReturnItem remWorkGroup();
     HDTBReturnItem remAccount(std::string);
 };
 
