@@ -164,6 +164,8 @@ HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
     system(createUser);
     system(addUser);
 
+    std::cout << "Your password is : " << "hdtb8675309" << std::endl;
+
 #elif __APPLE__
 
     system( ("dscl . -create /Users/" + accountName).c_str() );

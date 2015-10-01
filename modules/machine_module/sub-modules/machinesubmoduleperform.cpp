@@ -62,7 +62,7 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
     switch(commands[args[1]])
     {
 
-    case HDTB_MACHINE_CMD_DOMAIN:
+    case HDTB_MACHINE_CMD_CLEANUP:
         ri = cleanup();
         break;
 
@@ -102,6 +102,20 @@ HDTBReturnItem MachineSubModulePerform::cleanup()
     HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
     std::cout << std::endl << "Perform cleanup... " << std::endl;
+
+#ifdef __APPLE__
+
+
+
+    // Do this last
+    system("sudo rm -rf ~/.Trash/*");
+
+#elif _WIN32
+
+#endif
+
+
+
 
     ri.message = "Not yet created";
     return ri;
