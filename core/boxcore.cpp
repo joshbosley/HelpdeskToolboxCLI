@@ -32,6 +32,11 @@ BoxCore::BoxCore()
                 HDTBMapItem
                 ("machine", HDTB_CODE_MACHINE)
                 );
+
+    moduleMap.insert(
+                    HDTBMapItem
+                    ("software", HDTB_CODE_SS)
+                    );
 }
 
 void BoxCore::beginHumanInteraction()
@@ -177,6 +182,10 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
             ri = modBox.NEW_MODULE.processRequest(args);
             break;
         */
+
+        case HDTB_CODE_SS:
+            ri = modBox.ssModule.processRequest(args);
+            break;
 
         default:
             std::cout << "Default reached in process request. Handle Error" << std::endl;

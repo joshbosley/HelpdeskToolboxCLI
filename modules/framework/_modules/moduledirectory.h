@@ -10,6 +10,7 @@
 
 #define HDTB_CODE_HELP 0
 #define HDTB_CODE_MACHINE 1
+#define HDTB_CODE_SS 2
 
 #endif // HDTB_MODULEDIRECTORY
 
