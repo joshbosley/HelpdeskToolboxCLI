@@ -1,54 +1,42 @@
-
-
->> Rewrite module adding instructions in readme
->> Update machine help page
-
 Module creation :
 
     Disk formatting
-    Junk file cleaner
     Registry editor
     Network troubleshooter/ scanner/
-    Standard file backup
 
-Module edits:
+Module Status:
 
 1. Machine module
 
-    Complete the submodules one-by-one as to not get lost
-    and foget key elements.
+    SUB MODULE                                           WINDOWS                MAC OS
 
-    Machine Sub-Modules
-
-    [COMPLETE]
     add        - Sub module created
-                    - Domain                            [COMPLETE]
-                    - Workgroup                         [COMPLETE]
-                    - Administrator                     [COMPLETE]
+                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
+                    - Admin Account                     [COMPLETE]              [COMPLETE]
 
     [Under Construction]
     edit       - Sub module class created
-                    - Domain                            [COMPLETE]
-                    - Workgroup                         [COMPLETE]
-                    - Computer Name                     [COMPLETE]
-                    - UAC
-                    - IE
+                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
+                    - Computer Name                     [COMPLETE]              [Under Construction]
+                    - UAC                               [Under Construction]    [NOT SUPPORTED]
+                    - IE                                [Under Construction]    [NOT SUPPORTED]
 
-    [COMPLETE]
     remove     - Sub module class created
-                    - Domain                            [COMPLETE]
-                    - Workgroup                         [COMPLETE]
-                    - Administration                    [COMPLETE]
+                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
+                    - Account                           [COMPLETE]              [Under Construction]
 
-    [Under Construction]
     perform    - Sub module class created
-                    - Standard Cleanup
-                    - Data backup
-                    - javafix                           [COMPLETE]
+                    - Standard Cleanup                  [COMPLETE]              [Under Construction]
+                    - Data copy                         [COMPLETE]              [COMPLETE]
+                    - Data scrub                        [COMPLETE]              [Under Construction]
+                    - javafix                           [COMPLETE]              [Under Construction]
+                    - Windows Update                    [Under Construction]    [NOT SUPPORTED]
 
-    [COMPLETE]
     get        - Sub module class created
-                    - RAM                               [COMPLETE]
-                    - HDD                               [COMPLETE]
-                    - OS                                [COMPLETE]
+                    - RAM                               [COMPLETE]              [COMPLETE]
+                    - HDD                               [COMPLETE]              [COMPLETE]
+                    - OS                                [COMPLETE]              [COMPLETE]
 
