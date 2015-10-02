@@ -101,13 +101,14 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
 HDTBReturnItem MachineSubModulePerform::cleanup()
 {
     std::cout << std::endl << "Perform cleanup... " << std::endl;
-
 #ifdef _WIN32
-    return errorHandler.generateGenericError("OS not yet supported");
+    system("start lib\\machine\\cleanup.bat");
+    std::cout << std::endl << "Cleanup complete.." << std::endl;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+
 #elif __APPLE__
     // Do this last
     system("sudo rm -rf ~/.Trash/*");
-
     return errorHandler.generateGenericError("Not yet fully created");
 #endif
 }
@@ -115,8 +116,19 @@ HDTBReturnItem MachineSubModulePerform::cleanup()
 HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 {
     // Need to handle different platforms
-    std::cout << std::endl << "Copy from :" << src << " to :" << dest << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+    std::cout << std::endl << "Copy from : " << src << " to :" << dest << std::endl;
+#ifdef _WIN32
+    std::string command = ("xcopy " + src + " " + dest + "/e /h /i");
+    system(command.c_str());
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+#elif __APPLE__
+    std::string command = ("cp -a " + src + " " + dest);
+    system(command.c_str());
+    return HDTBReturnItem(HDTB_RETURN_BAD, "YET TO BE TESTED");
+#else
+    return errorHandler.generateGenericError("OS not supported");
+
+#endif
 }
 
 HDTBReturnItem MachineSubModulePerform::winupdate()
@@ -127,8 +139,15 @@ HDTBReturnItem MachineSubModulePerform::winupdate()
 
 HDTBReturnItem MachineSubModulePerform::scrub()
 {
-    std::cout << std::endl << "Perform scrub" << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+#ifdef _WIN32
+    system("start lib\\machine\\scrub.bat");
+    std::cout << std::endl << "Cleanup complete.." << std::endl;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+#elif __APPLE__
+    return errorHandler.generateGenericError("OS not yet supported");
+#else
+    return errorHandler.generateGenericError("OS not supported");
+#endif
 }
 
 HDTBReturnItem MachineSubModulePerform::fixJava()
