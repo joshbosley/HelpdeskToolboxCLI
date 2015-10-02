@@ -11,22 +11,22 @@ Module Status:
     SUB MODULE                                           WINDOWS                MAC OS
 
     add        - Sub module created
-                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Domain                            [COMPLETE]              COMPLETED]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
                     - Admin Account                     [COMPLETE]              [COMPLETE]
 
     [Under Construction]
     edit       - Sub module class created
-                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Domain                            [COMPLETE]              [COMPLETED]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
-                    - Computer Name                     [COMPLETE]              [Under Construction]
+                    - Computer Name                     [COMPLETE]              [COMPLETED]
                     - UAC                               [Under Construction]    [NOT SUPPORTED]
                     - IE                                [Under Construction]    [NOT SUPPORTED]
 
     remove     - Sub module class created
-                    - Domain                            [COMPLETE]              [Under Construction]
+                    - Domain                            [COMPLETE]              [COMPLETED]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
-                    - Account                           [COMPLETE]              [Under Construction]
+                    - Account                           [COMPLETE]              [COMPLETED]
 
     perform    - Sub module class created
                     - Standard Cleanup                  [COMPLETE]              [Under Construction]
