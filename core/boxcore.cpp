@@ -5,6 +5,14 @@ namespace hdtoolbox
 
 BoxCore::BoxCore()
 {
+#ifdef _WIN32
+    system("color 0A");
+    SetConsoleTitle(TEXT("Helpdesk Toolbox - Windows Build"));
+#elif __APPLE__
+
+#endif
+
+
     session = false;
     prompt = "core >>";
 

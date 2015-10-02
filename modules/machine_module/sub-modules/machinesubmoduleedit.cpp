@@ -143,9 +143,6 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
 HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 {
 #ifdef _WIN32
-
-    ri.message = "None";
-
     std::cout << " DOMAIN : " << domain;
 
     std::string username, password;
@@ -162,6 +159,8 @@ HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 
     std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
+
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
     HDTB_UNUSED(domain);
     return errorHandler.generateGenericError("OS not supported");

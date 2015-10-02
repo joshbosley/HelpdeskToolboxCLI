@@ -62,7 +62,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         {
 
 #ifdef _WIN32
-            ri = addToDomain(args[2]);
+            return addToDomain(args[2]);
 
 #elif __APPLE__
             return errorHandler.generateGenericError("OS not yet supported");
