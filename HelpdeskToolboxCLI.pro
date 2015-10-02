@@ -56,5 +56,6 @@ DISTFILES += \
     lib/machine/removeDomain.ps1 \
     lib/machine/editCname.ps1 \
     lib/machine/deployment.properties \
-    lib/machine/fixJava.bat
+    lib/machine/fixJava.bat \
+    lib/machine/cleanup.bat
 
