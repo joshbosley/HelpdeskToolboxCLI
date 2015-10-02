@@ -3,15 +3,15 @@
 
 Adding your own module : 
 
-1. Create a module code in modules/moduledirectory.h
+1. Create a module code in modules/framework/_modules/moduledirectory.h
     - Keep to naming scheme, and remember to ensure unique id
 
-2. Write a new class file within modules/ using ModuleBase as
+2. Write a new class file within modules/name_of_module/ using ModuleBase as
     the base class for your new module. For an example of how this
     is done, examine helpmodule.h, and helpmodule.cpp
 
 3. Once the module class is written, insert the object into the
-    modulebox.h structure. 
+    core/modulebox.h structure. 
 
 4. Add the module into the boxcore.moduleMap<CODE, ARG> within
     boxcore construction.

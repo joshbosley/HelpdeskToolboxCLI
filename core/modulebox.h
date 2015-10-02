@@ -11,6 +11,7 @@
 
 #include "../modules/help_module/helpmodule.h"
 #include "../modules/machine_module/machinemodule.h"
+#include "../modules/ss_module/ssmodule.h"
 
 // END_MODULES_INCLUDES
 
@@ -22,6 +23,8 @@ namespace hdtoolbox
 
         // Add modules here!
         MachineModule machineModule;
+
+        SSModule ssModule;
     };
 
     typedef struct moduleBox moduleBox;

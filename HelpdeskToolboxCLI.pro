@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     modules/machine_module/sub-modules/machinesubmoduleperform.cpp \
     modules/machine_module/sub-modules/machinesubmoduleget.cpp \
     modules/framework/_errors/errorbase.cpp \
-    modules/framework/_modules/modulebase.cpp
+    modules/framework/_modules/modulebase.cpp \
+    modules/ss_module/ssmodule.cpp
 
 HEADERS += \
     core/boxcore.h \
@@ -40,7 +41,8 @@ HEADERS += \
     modules/framework/_os/osincludes.h \
     modules/framework/_os/osinfo.h \
     modules/framework/_types/returncodes.h \
-    modules/framework/_types/returnitem.h
+    modules/framework/_types/returnitem.h \
+    modules/ss_module/ssmodule.h
 
 DISTFILES += \
     work.todo \
