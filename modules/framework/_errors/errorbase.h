@@ -8,6 +8,11 @@
 #include <iomanip>
 #include <iostream>
 
+
+#include "../_types/returnitem.h"
+#include "../_types/returncodes.h"
+#include "../../../core/datatypes.h"
+
 /*
 
     A simple error reporting class that can be used as-is, or can be
@@ -37,9 +42,8 @@ class ErrorBase
 public:
     ErrorBase();
 
-    void generateOperableError();
-    void generateExitError();
-
+    void displayError(std::string);
+    HDTBReturnItem generateGenericError(std::string);
 };
 
 }

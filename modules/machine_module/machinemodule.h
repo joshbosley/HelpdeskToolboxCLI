@@ -7,7 +7,7 @@
 
 // Required
 #include "../../core/datatypes.h"
-#include "../framework/modulebase.h"
+#include "../framework/_modules/modulebase.h"
 
 // Sub-Modules
 #include "sub-modules/machinesubmoduleadd.h"

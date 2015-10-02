@@ -3,36 +3,27 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-QMAKE_CXXFLAGS += -libgcc
-
 SOURCES += main.cpp \
     core/boxcore.cpp \
-    modules/framework/modulebase.cpp \
     modules/help_module/helpmodule.cpp \
-    modules/framework/errorbase.cpp \
     modules/machine_module/machinemodule.cpp \
     modules/machine_module/sub-modules/machinesubmoduleadd.cpp \
     modules/machine_module/sub-modules/machinesubmoduleedit.cpp \
     modules/machine_module/sub-modules/machinesubmoduleremove.cpp \
     modules/machine_module/sub-modules/machinesubmoduleperform.cpp \
-    modules/machine_module/sub-modules/machinesubmoduleget.cpp
+    modules/machine_module/sub-modules/machinesubmoduleget.cpp \
+    modules/framework/_errors/errorbase.cpp \
+    modules/framework/_modules/modulebase.cpp
 
 HEADERS += \
     core/boxcore.h \
-    modules/framework/modulebase.h \
     core/modulebox.h \
     modules/moduledirectory.h \
     modules/returnitem.h \
     modules/returncodes.h \
-    modules/framework/osinfo.h \
     modules/errorbase.h \
     modules/framework/errorbase.h \
     core/modulebox.h \
-    modules/framework/modulebase.h \
-    modules/framework/moduledirectory.h \
-    modules/framework/osinfo.h \
-    modules/framework/returncodes.h \
-    modules/framework/returnitem.h \
     modules/help_module/helpmodule.h \
     core/datatypes.h \
     modules/machine_module/machinemodule.h \
@@ -42,7 +33,14 @@ HEADERS += \
     modules/machine_module/sub-modules/machinesubmoduleremove.h \
     modules/machine_module/sub-modules/machinesubmoduleperform.h \
     modules/machine_module/sub-modules/machinesubmoduleget.h \
-    modules/framework/osincludes.h
+    modules/framework/osincludes.h \
+    modules/framework/_errors/errorbase.h \
+    modules/framework/_modules/modulebase.h \
+    modules/framework/_modules/moduledirectory.h \
+    modules/framework/_os/osincludes.h \
+    modules/framework/_os/osinfo.h \
+    modules/framework/_types/returncodes.h \
+    modules/framework/_types/returnitem.h
 
 DISTFILES += \
     work.todo \

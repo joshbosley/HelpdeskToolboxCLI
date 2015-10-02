@@ -9,14 +9,18 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "returnitem.h"
-#include "returncodes.h"
+
 #include "moduledirectory.h"
-#include "../../core/datatypes.h"
+#include "../_types/returnitem.h"
+#include "../_types/returncodes.h"
+#include "../../../core/datatypes.h"
+
+// Error reporter
+#include "../_errors/errorbase.h"
 
 // Pre-defined os variables
-#include "osinfo.h"
-#include "osincludes.h"
+#include "../_os/osinfo.h"
+#include "../_os/osincludes.h"
 
 /*
 
@@ -44,6 +48,9 @@ protected:
 
     // Displaying loaded commands
     HDTBReturnItem displayAvailableCommands();
+
+    // Error Handler
+    ErrorBase errorHandler;
 
 private:
 

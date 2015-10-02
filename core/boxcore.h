@@ -18,13 +18,13 @@
 #include "modulebox.h"
 
 // The returnable item
-#include "../modules/framework/returnitem.h"
+#include "../modules/framework/_types/returnitem.h"
 
 // The returnable codes
-#include "../modules/framework/returncodes.h"
+#include "../modules/framework/_types/returncodes.h"
 
 // Pre-defined os variables
-#include "../modules/framework/osinfo.h"
+#include "../modules/framework/_os/osinfo.h"
 
 
 namespace hdtoolbox

@@ -38,7 +38,6 @@ MachineSubModuleEdit::MachineSubModuleEdit() :
 
 HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given
@@ -46,9 +45,7 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No commands given");
     }
 
     // Make sure command exists
@@ -56,10 +53,7 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Unknown command");
     }
 
     //Handle command
@@ -69,78 +63,85 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
     case HDTB_MACHINE_CMD_DOMAIN:
         if (args.size() != 3)
         {
-            ri.message = "No domain name given";
-            return ri;
+            return errorHandler.generateGenericError("No domain given");
         }
         else
         {
-            if(HDTB_OS == "WIN_OS")
-                ri = editDomain(args[2]);
-            else if (HDTB_OS == "MAC_OS")
-                ri.message = "Operation not supported on MAC OS";
-            else
-                ri.message = "Unknown OS, operation not supported";
+#ifdef _WIN32
+            return editDomain(args[2]);
+#elif __APPLE__
+            return errorHandler.generateGenericError("OS not yet supported");
+#else
+            return errorHandler.generateGenericError("OS not supported");
+#endif
         }
         break;
 
     case HDTB_MACHINE_CMD_WORKGROUP:
         if (args.size() != 3)
         {
-            ri.message = "No workgroup name given";
-            return ri;
+            return errorHandler.generateGenericError("No workgroup given");
         }
         else
         {
-            ri = editWorkGroup(args[2]);
+#ifdef _WIN32
+            return editWorkGroup(args[2]);
+#else
+            return errorHandler.generateGenericError("OS not supported");
+#endif
         }
         break;
 
     case HDTB_MACHINE_CMD_UAC:
+#ifdef _WIN32
         if (args.size() != 3)
         {
-            ri.message = "No state given <on/off>";
-            return ri;
+            return errorHandler.generateGenericError("No state given <on/off>");
         }
         else
         {
-            ri = editUAC(args[2]);
+            return editUAC(args[2]);
         }
+#else
+            return errorHandler.generateGenericError("OS not supported");
+#endif
         break;
 
     case HDTB_MACHINE_CMD_CNAME:
         if (args.size() != 3)
         {
-            ri.message = "No name given";
-            return ri;
+            return errorHandler.generateGenericError("No name given");
         }
         else
         {
-            ri = editComputerName(args[2]);
+            return editComputerName(args[2]);
         }
         break;
 
     case HDTB_MACHINE_CMD_IE:
+#ifdef _WIN32
         if (args.size() != 3)
         {
-            ri.message = "No verion given <10/11>";
-            return ri;
+            return errorHandler.generateGenericError("No version given <10/11>");
         }
         else
         {
-            ri = editIE(args[2]);
+            return editIE(args[2]);
         }
+#else
+        return errorHandler.generateGenericError("OS not supported");
+#endif
         break;
 
     default:
         break;
     }
 
-    return ri;
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 #ifdef _WIN32
 
     ri.message = "None";
@@ -162,41 +163,28 @@ HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
     std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 #else
-    ri.message = "Only supported on Windows OS";
+    HDTB_UNUSED(domain);
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Change to workgroup : " << workgroup << std::endl;
 
-#ifdef _WIN32
     //Set the execution policy
     system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
     std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
     system(exec.c_str());
 
-    ri.retCode = HDTB_RETURN_GOOD;
-
-#else
-    ri.message = "Only supported on Windows OS";
-#endif
-    return ri;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editUAC(std::string state)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Change state to : " << state << std::endl;
-
-    ri.message = "Not yet created";
-    return ri;
-
+    return errorHandler.generateGenericError("Not yet created");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
@@ -212,8 +200,9 @@ HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
 
     ri.retCode = HDTB_RETURN_GOOD;
 
-#else
-    ri.message = "Not yet created for MAC OS";
+#elif __APPLE__
+    HDTB_UNUSED(name);
+    return errorHandler.generateGenericError("OS not yet supported ");
 #endif
     return ri;
 
@@ -221,13 +210,8 @@ HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
 
 HDTBReturnItem MachineSubModuleEdit::editIE(std::string version)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Change version to : " << version << std::endl;
-
-    ri.message = "Not yet created";
-    return ri;
-
+    return errorHandler.generateGenericError("Not yet created");
 }
 
 }

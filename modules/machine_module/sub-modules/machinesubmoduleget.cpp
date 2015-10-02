@@ -32,7 +32,6 @@ MachineSubModuleGet::MachineSubModuleGet() :
 
 HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given
@@ -40,9 +39,7 @@ HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No command given");
     }
 
     // Make sure command exists
@@ -50,10 +47,7 @@ HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Unknown command");
     }
 
     //Handle command
@@ -61,53 +55,48 @@ HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args
     {
 
     case HDTB_MACHINE_CMD_RAM:
-        ri = getRAM();
+        return getRAM();
         break;
 
     case HDTB_MACHINE_CMD_HDD:
-        ri = getHDD();
+        return getHDD();
         break;
 
     case HDTB_MACHINE_CMD_CPU:
-        ri = getCPU();
+        return getCPU();
         break;
 
     case HDTB_MACHINE_CMD_OS:
-        ri = getOS();
+        return getOS();
         break;
 
     default:
         break;
     }
 
-    return ri;
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 HDTBReturnItem MachineSubModuleGet::getRAM()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef __APPLE__
         unsigned long long memsize;
         size_t len = sizeof(memsize);
         sysctlbyname("hw.memsize.brand_string", &memsize, &len, NULL, 0);
         std::cout << std::endl << len << " GB" << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif _WIN32
         std::cout << std::endl << system("wmic memphysical get MaxCapacity")
                   << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
-        ri.message = "OS not supported.";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 HDTBReturnItem MachineSubModuleGet::getHDD()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef __APPLE__
         char *file = (char*)"/";
         struct statvfs buf;
@@ -121,56 +110,49 @@ HDTBReturnItem MachineSubModuleGet::getHDD()
                       << "Total Disk Space : " << std::setw(15) << disk_size << std::endl
                       << "Disk Usage :      " << std::setw(15) << used << std::endl
                       << "Free Space :       " << std::setw(15) << free << std::endl;
-            ri.retCode = HDTB_RETURN_GOOD;
+            return HDTBReturnItem(HDTB_RETURN_GOOD, "");
         }
         else
         {
-            ri.message = "Could not retrieve disk information on your MAC OS";
+            return errorHandler.generateGenericError("Could not retrieve your disk information.");
         }
 #elif _WIN32
         std::cout << std::endl
                   << system("wmic logicaldisk get Name, FreeSpace, Description")
                   << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
-        ri.message = "OS not supported.";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 HDTBReturnItem MachineSubModuleGet::getCPU()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef __APPLE__
         char buf[100];
         size_t buflen = 100;
         sysctlbyname("machdep.cpu.brand_string", &buf, &buflen, NULL, 0);
         std::cout << std::endl << buf << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #elif _WIN32
         std::cout << std::endl << system("wmic cpu get Name") << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
-    ri.message = "OS not supported.";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 HDTBReturnItem MachineSubModuleGet::getOS()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef __APPLE__
         std::cout << std::endl << system("sw_vers") << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #elif _WIN32
         std::cout << std::endl << system("wmic os get Caption, Version") << std::endl;
-        ri.retCode = HDTB_RETURN_GOOD;
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
-    ri.message = "OS not supported.";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 }
