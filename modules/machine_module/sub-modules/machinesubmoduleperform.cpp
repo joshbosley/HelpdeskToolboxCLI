@@ -124,7 +124,7 @@ HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 #elif __APPLE__
     std::string command = ("cp -a " + src + " " + dest);
     system(command.c_str());
-    return HDTBReturnItem(HDTB_RETURN_BAD, "YET TO BE TESTED");
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
     return errorHandler.generateGenericError("OS not supported");
 

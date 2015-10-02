@@ -10,6 +10,7 @@
     // HDD Information
     #include <sys/statvfs.h>
     #include <sys/sysctl.h>
+    #include <unistd.h>
 
 #else
 
