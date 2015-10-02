@@ -27,5 +27,11 @@ typedef std::map<std::string, int>::iterator HDTBMapIterator;
 typedef std::stack< std::vector<std::string> > HDTBHistory;
 
 
+/*
+        Other
+*/
+#define HDTB_UNUSED(expr) do { (void)(expr); } while (0)
+
+
 #endif // HDTB_DATATYPES
 

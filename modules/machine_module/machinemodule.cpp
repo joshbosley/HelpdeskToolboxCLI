@@ -36,7 +36,6 @@ ModuleBase(HDTB_CODE_MACHINE,
 
 HDTBReturnItem MachineModule::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given
@@ -44,9 +43,7 @@ HDTBReturnItem MachineModule::processRequest(std::vector<std::string> args)
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No commands given");
     }
 
     // Make sure command exists
@@ -54,10 +51,7 @@ HDTBReturnItem MachineModule::processRequest(std::vector<std::string> args)
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Command not found");
     }
 
     //Handle command
@@ -70,42 +64,42 @@ HDTBReturnItem MachineModule::processRequest(std::vector<std::string> args)
         args.erase(args.begin());
 
         // Call sub-module's processRequest function;
-        ri = add.processRequest(args);
+        return add.processRequest(args);
         break;
 
     case HDTB_MACHINE_EDIT:
         // Remove first arg - No longer required
         args.erase(args.begin());
 
-        ri = edit.processRequest(args);
+        return edit.processRequest(args);
         break;
 
     case HDTB_MACHINE_REMOVE:
         // Remove first arg - No longer required
         args.erase(args.begin());
 
-        ri = remove.processRequest(args);
+        return remove.processRequest(args);
         break;
 
     case HDTB_MACHINE_PERFORM:
         // Remove first arg - No longer required
         args.erase(args.begin());
 
-        ri = perform.processRequest(args);
+        return perform.processRequest(args);
         break;
 
     case HDTB_MACHINE_GET:
         // Remove first arg - No longer required
         args.erase(args.begin());
 
-        ri = get.processRequest(args);
+        return get.processRequest(args);
         break;
 
     default:
         break;
     }
 
-    return ri;
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 }

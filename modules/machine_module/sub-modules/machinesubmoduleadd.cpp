@@ -28,7 +28,6 @@ MachineSubModuleAdd::MachineSubModuleAdd() :
 
 HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given, and if they are if there are enough
@@ -37,8 +36,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         // Call to super class
         displayAvailableCommands();
 
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No commands given");
     }
 
     // Make sure command exists
@@ -47,9 +45,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         // Call to super class
         displayAvailableCommands();
 
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Command not found");
     }
 
 
@@ -60,8 +56,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
     case HDTB_MACHINE_CMD_DOMAIN:
         if (args.size() != 3)
         {
-            ri.message = "No domain name given";
-            return ri;
+            return errorHandler.generateGenericError("No domain given");
         }
         else
         {
@@ -70,9 +65,9 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
             ri = addToDomain(args[2]);
 
 #elif __APPLE__
-            ri.message = "Operation not supported on MAC OS";
+            return errorHandler.generateGenericError("OS not yet supported");
 #else
-            ri.message = "Unknown OS, operation not supported";
+            return errorHandler.generateGenericError("OS not supported");
 #endif
         }
         break;
@@ -80,24 +75,29 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
     case HDTB_MACHINE_CMD_WORKGROUP:
         if (args.size() != 3)
         {
-            ri.message = "No workgroup name given";
-            return ri;
+            return errorHandler.generateGenericError("No workgroup given");
         }
         else
         {
-            ri = addToWorkGroup(args[2]);
+#ifdef _WIN32
+            return addToWorkGroup(args[2]);
+#elif __APPLE__
+            return errorHandler.generateGenericError("OS not yet supported");
+#else
+            return errorHandler.generateGenericError("OS not supported");
+#endif
+
         }
         break;
 
     case HDTB_MACHINE_CMD_ADMINISTRATOR:
         if (args.size() != 3)
         {
-            ri.message = "No admin name given";
-            return ri;
+            return errorHandler.generateGenericError("No admin name given");
         }
         else
         {
-            ri = addAnAdministrator(args[2]);
+            return addAnAdministrator(args[2]);
         }
         break;
 
@@ -105,8 +105,7 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         break;
     }
 
-    return ri;
-
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 /*
@@ -116,10 +115,8 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
 */
 HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-    ri.message = "None";
+    // Wont reach here if not _WIN32
 
-#ifdef _WIN32
     std::cout << " DOMAIN : " << domain;
 
     std::string username, password;
@@ -137,11 +134,7 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
     std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 
-    ri.retCode = HDTB_RETURN_GOOD;
-#else
-    ri.message = "Only supported on Windows OS";
-#endif
-    return ri;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 /*
@@ -151,24 +144,14 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 */
 HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string workgroup)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-    ri.message = "None";
-
     std::cout << std::endl << "Add to workgroup : " << workgroup << std::endl;
-
-#ifdef _WIN32
 
     //Set the execution policy
     system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
     std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
     system(exec.c_str());
-    ri.retCode = HDTB_RETURN_GOOD;
-
-#else
-    ri.message = "Only supported on Windows OS";
-#endif
-    return ri;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 /*
@@ -178,8 +161,6 @@ HDTBReturnItem MachineSubModuleAdd::addToWorkGroup(std::string workgroup)
 */
 HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef _WIN32
 
     // Come up with a better password, generate something
@@ -202,8 +183,7 @@ HDTBReturnItem MachineSubModuleAdd::addAnAdministrator(std::string accountName)
 
 #endif
 
-    std::cout << std::endl << "Created admin user : " << accountName << std::endl;
-    return ri;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 }

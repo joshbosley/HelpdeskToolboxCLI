@@ -28,7 +28,6 @@ MachineSubModuleRemove::MachineSubModuleRemove() :
 
 HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given
@@ -36,9 +35,7 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No commands given");
     }
 
     // Make sure command exists
@@ -46,10 +43,7 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Command not found");
     }
 
     //Handle command
@@ -59,34 +53,36 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
     case HDTB_MACHINE_CMD_DOMAIN:
         if (args.size() != 3)
         {
-            ri.message = "No domain name given";
-            return ri;
+            return errorHandler.generateGenericError("No domain given");
         }
         else
         {
 #ifdef _WIN32
-                ri = remDomain(args[2]);
+                return remDomain(args[2]);
 #elif __APPLE__
-                ri.message = "Operation not supported on MAC OS";
+            return errorHandler.generateGenericError("OS not yet supported");
 #else
-                ri.message = "Unknown OS, operation not supported";
+            return errorHandler.generateGenericError("OS not supported");
 #endif
         }
         break;
 
     case HDTB_MACHINE_CMD_WORKGROUP:
-            ri = remWorkGroup();
+#ifdef _WIN32
+            return remWorkGroup();
+#else
+            return errorHandler.generateGenericError("OS not supported");
+#endif
         break;
 
     case HDTB_MACHINE_CMD_UNAME:
         if (args.size() != 3)
         {
-            ri.message = "No account name given";
-            return ri;
+            return errorHandler.generateGenericError("No account given");
         }
         else
         {
-            ri = remAccount(args[2]);
+            return remAccount(args[2]);
         }
         break;
 
@@ -94,13 +90,11 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
         break;
     }
 
-    return ri;
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Remove from domain : " << domain << std::endl;
 
     std::string username, password;
@@ -117,13 +111,11 @@ HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
 
     std::string exec = ("start powershell.exe lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
-    return ri;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModuleRemove::remWorkGroup()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef _WIN32
     //Set the execution policy
     system("start powershell.exe Set-ExecutionPolicy Bypass \n");
@@ -131,18 +123,15 @@ HDTBReturnItem MachineSubModuleRemove::remWorkGroup()
     std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 HDTBGROUP\n" );
     system(exec.c_str());
 
-    ri.retCode = HDTB_RETURN_GOOD;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #else
-    ri.message = "Only supported on Windows OS";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 HDTBReturnItem MachineSubModuleRemove::remAccount(std::string account)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
  #ifdef _WIN32
 
     std::cout << std::endl << "Remove account : " << account << std::endl;
@@ -150,18 +139,16 @@ HDTBReturnItem MachineSubModuleRemove::remAccount(std::string account)
 
     system(removeUser.c_str());
 
-    ri.retCode = HDTB_RETURN_GOOD;
-
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #elif __APPLE__
 
     //Apple has a weird way of removing users with dscl
     //Avoiding for now
 
-    ri.message = "Not yet created"
+    HDTB_UNUSED(account);
+    return errorHandler.generateGenericError("OS not yet supported");
 
 #endif
-    return ri;
-
 }
 
 }

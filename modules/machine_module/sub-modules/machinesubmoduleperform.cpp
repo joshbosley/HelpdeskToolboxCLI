@@ -39,7 +39,6 @@ MachineSubModulePerform::MachineSubModulePerform() :
 
 HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<std::string> args)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
     history.push(args);
 
     // Make sure commands are given
@@ -47,9 +46,7 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.message = "No commands given";
-        return ri;
+        return errorHandler.generateGenericError("No commands given");
     }
 
     // Make sure command exists
@@ -57,10 +54,7 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
     {
         // Call to super class
         displayAvailableCommands();
-
-        ri.retCode = HDTB_RETURN_BAD;
-        ri.message = "Command not found";
-        return ri;
+        return errorHandler.generateGenericError("Command not found");
     }
 
     //Handle command
@@ -68,113 +62,87 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
     {
 
     case HDTB_MACHINE_CMD_CLEANUP:
-        ri = cleanup();
+        return cleanup();
         break;
 
     case HDTB_MACHINE_CMD_COPY:
         if (args.size() != 4)
         {
-            ri.message = "Copy requires a source, and a destination.";
-            return ri;
+            return errorHandler.generateGenericError("Requires source and destination");
         }
         else
         {
-            ri = copy(args[2], args[3]);
+            return copy(args[2], args[3]);
         }
 
         break;
 
     case HDTB_MACHINE_CMD_WUPDATE:
 #ifdef _WIN32
-            ri = winupdate();
+            return winupdate();
 #else
-            ri.message = "Operation is windows specific.";
+        return errorHandler.generateGenericError("OS not supported");
 #endif
         break;
 
     case HDTB_MACHINE_CMD_SCRUB:
-        ri = scrub();
+        return scrub();
         break;
 
     case HDTB_MACHINE_CMD_FIXJAVA:
-        ri = fixJava();
+        return fixJava();
         break;
     default:
         break;
     }
-
-    return ri;
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 HDTBReturnItem MachineSubModulePerform::cleanup()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Perform cleanup... " << std::endl;
 
 #ifdef _WIN32
-
-
+    return errorHandler.generateGenericError("OS not yet supported");
 #elif __APPLE__
     // Do this last
     system("sudo rm -rf ~/.Trash/*");
 
+    return errorHandler.generateGenericError("Not yet fully created");
 #endif
-
-    ri.message = "Not yet created";
-    return ri;
 }
 
 HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 {
     // Need to handle different platforms
-
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Copy from :" << src << " to :" << dest << std::endl;
-
-    ri.message = "Not yet created";
-    return ri;
+    return errorHandler.generateGenericError("Not yet created");
 }
 
 HDTBReturnItem MachineSubModulePerform::winupdate()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Launch windows update" << std::endl;
-
-    ri.message = "Not yet created";
-    return ri;
+    return errorHandler.generateGenericError("Not yet created");
 }
 
 HDTBReturnItem MachineSubModulePerform::scrub()
 {
-    // Double check to make sure user wants to do this.
-    // Handle each platform
-
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
     std::cout << std::endl << "Perform scrub" << std::endl;
-
-    ri.message = "Not yet created";
-    return ri;
+    return errorHandler.generateGenericError("Not yet created");
 }
 
 HDTBReturnItem MachineSubModulePerform::fixJava()
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef _WIN32
 
     system("start lib\\machine\\fixJava.bat");
-    ri.retCode = HDTB_RETURN_GOOD;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif __APPLE__
-    ri.message = "Not yet created for MACOS"
+    return errorHandler.generateGenericError("OS not yet supported");
 #else
-    ri.message = "Not supported on this OS";
+    return errorHandler.generateGenericError("OS not supported");
 #endif
-    return ri;
 }
 
 }

@@ -18,7 +18,7 @@
 
 // Required
 #include "../../core/datatypes.h"
-#include "../framework/modulebase.h"
+#include "../framework/_modules/modulebase.h"
 
 // Required
 namespace hdtoolbox
