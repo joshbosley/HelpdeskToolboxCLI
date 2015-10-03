@@ -74,7 +74,6 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
         {
             return copy(args[2], args[3]);
         }
-
         break;
 
     case HDTB_MACHINE_CMD_WUPDATE:
@@ -104,13 +103,18 @@ HDTBReturnItem MachineSubModulePerform::cleanup()
 #ifdef _WIN32
     system("start lib\\machine\\cleanup.bat");
     std::cout << std::endl << "Cleanup complete.." << std::endl;
-    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif __APPLE__
-    // Do this last
+    system("sudo rm ~/Library/Safari/History.plist");
+    system("sudo rm ~/Library/Safari/Downloads.plist");
+    system("sudo rm ~/Library/Safari/HistoryIndex.sk");
+    system("sudo rm ~/Library/Safari/LastSession.plist");
+    system("sudo rm ~/Library/Safari/TopSites.plist");
+    system("sudo rm -rf ~/Library/Caches/com.apple.safari");
+
     system("sudo rm -rf ~/.Trash/*");
-    return errorHandler.generateGenericError("Not yet fully created");
 #endif
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
@@ -158,7 +162,21 @@ HDTBReturnItem MachineSubModulePerform::fixJava()
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif __APPLE__
-    return errorHandler.generateGenericError("OS not yet supported");
+
+    std::string reply;
+    std::cout << std::endl
+    /*  J  */ << std::endl
+    /*  A  */ << "This has not been fully tested, and might not fix the issue. Continue ?  (y/n)"
+    /*  B  */ << std::endl
+    /*  :) */ << std::endl;
+    std::cin >> reply;
+    if(reply != "y")
+        return errorHandler.generateGenericError("Canceled fixJava");
+
+    // Attempt to fix java
+    system("cp -a lib\\machine\\deployment.properties ${deployment.java.home}/lib/deploy/deployment.properties");
+
+    return errorHandler.generateGenericError("[UNDER CONSTRUCTION] - fixJava ran, who knows how it ended up");
 #else
     return errorHandler.generateGenericError("OS not supported");
 #endif

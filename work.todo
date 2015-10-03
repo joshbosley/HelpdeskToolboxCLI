@@ -11,28 +11,28 @@ Module Status:
     SUB MODULE                                           WINDOWS                MAC OS
 
     add        - Sub module created
-                    - Domain                            [COMPLETE]              COMPLETED]
+                    - Domain                            [COMPLETE]              [COMPLETE (untested)]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
                     - Admin Account                     [COMPLETE]              [COMPLETE]
 
     [Under Construction]
     edit       - Sub module class created
-                    - Domain                            [COMPLETE]              [COMPLETED]
+                    - Domain                            [COMPLETE]              [COMPLETE (untested)]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
-                    - Computer Name                     [COMPLETE]              [COMPLETED]
+                    - Computer Name                     [COMPLETE]              [COMPLETE (untested)]
                     - UAC                               [Under Construction]    [NOT SUPPORTED]
                     - IE                                [Under Construction]    [NOT SUPPORTED]
 
     remove     - Sub module class created
-                    - Domain                            [COMPLETE]              [COMPLETED]
+                    - Domain                            [COMPLETE]              [COMPLETED (untested)]
                     - Workgroup                         [COMPLETE]              [NOT SUPPORTED]
-                    - Account                           [COMPLETE]              [COMPLETED]
+                    - Account                           [COMPLETE]              [COMPLETE (untested)]
 
     perform    - Sub module class created
-                    - Standard Cleanup                  [COMPLETE]              [Under Construction]
+                    - Standard Cleanup                  [COMPLETE]              [COMPLETE]
                     - Data copy                         [COMPLETE]              [COMPLETE]
                     - Data scrub                        [COMPLETE]              [Under Construction]
-                    - javafix                           [COMPLETE]              [Under Construction]
+                    - javafix                           [COMPLETE]              [COMPLETE (untested)]
                     - Windows Update                    [Under Construction]    [NOT SUPPORTED]
 
     get        - Sub module class created
