@@ -1,10 +1,10 @@
 #ifndef HDTB_NETWORKMODULE_H
 #define HDTB_NETWORKMODULE_H
 
-
-// Required
+#include "networkdirectory.h"
 #include "../../core/datatypes.h"
 #include "../framework/_modules/modulebase.h"
+
 namespace hdtoolbox
 {
 
@@ -17,7 +17,11 @@ public:
 
 private:
 
-    HDTBReturnItem displayIP();
+    HDTBReturnItem ping(std::string ip, std::string count);
+    HDTBReturnItem reset();
+    HDTBReturnItem blast();
+    HDTBReturnItem knock();
+    HDTBReturnItem comm();
 
 };
 

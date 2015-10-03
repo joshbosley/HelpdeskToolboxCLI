@@ -44,7 +44,8 @@ HEADERS += \
     modules/framework/_types/returncodes.h \
     modules/framework/_types/returnitem.h \
     modules/ss_module/ssmodule.h \
-    modules/network_module/networkmodule.h
+    modules/network_module/networkmodule.h \
+    modules/network_module/networkdirectory.h
 
 DISTFILES += \
     work.todo \
@@ -59,5 +60,6 @@ DISTFILES += \
     lib/machine/editCname.ps1 \
     lib/machine/deployment.properties \
     lib/machine/fixJava.bat \
-    lib/machine/cleanup.bat
+    lib/machine/cleanup.bat \
+    modules/help_module/pages/network
 
