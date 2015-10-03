@@ -9,7 +9,7 @@ BoxCore::BoxCore()
     system("color 0A");
     SetConsoleTitle(TEXT("Helpdesk Toolbox - Windows Build"));
 #elif __APPLE__
-
+    std::cout << HDTB_PUT_RED;
 #endif
 
 
@@ -36,6 +36,11 @@ BoxCore::BoxCore()
     moduleMap.insert(
                     HDTBMapItem
                     ("software", HDTB_CODE_SS)
+                    );
+
+    moduleMap.insert(
+                    HDTBMapItem
+                    ("network", HDTB_CODE_NETWORK)
                     );
 }
 
@@ -103,12 +108,17 @@ void BoxCore::beginHumanInteraction()
             break;
 
         default:
+            errHandler.generateGenericError("Default reached in human interaction");
             break;
         }
     }
 
     // Exit message.
     std::cout << std::endl << "Exiting. Goodbye. :-]" << std::endl << std::endl;
+
+#ifdef __APPLE__
+       std::cout << HDTB_PUT_RESET;
+#endif
 }
 
 HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
@@ -124,7 +134,6 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
         std::cout << "No module triggered by [" << args[0] << "] " << std::endl;
         ri.retCode = HDTB_RETURN_GOOD;
         std::cout << std::endl << "Type 'help me' to figure out what to do. " << std::endl;
-
     }
     else
     {
@@ -187,14 +196,16 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
             ri = modBox.ssModule.processRequest(args);
             break;
 
+        case HDTB_CODE_NETWORK:
+            ri = modBox.networkModule.processRequest(args);
+            break;
+
         default:
-            std::cout << "Default reached in process request. Handle Error" << std::endl;
+            return errHandler.generateGenericError("Default reached in core module switch");
             break;
         }
     }
-
     return ri;
 }
-
 }
 

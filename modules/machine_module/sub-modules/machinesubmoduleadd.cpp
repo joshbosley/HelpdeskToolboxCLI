@@ -74,8 +74,6 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         {
 #ifdef _WIN32
             return addToWorkGroup(args[2]);
-#elif __APPLE__
-            return errorHandler.generateGenericError("OS not yet supported");
 #else
             return errorHandler.generateGenericError("OS not supported");
 #endif

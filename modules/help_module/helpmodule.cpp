@@ -141,9 +141,6 @@ HDTBReturnItem HelpModule::loadManualPages()
                             std::pair<std::string, std::vector<std::string>>
                             (manFileName, manContent)
                             );
-
-                // Clean everything, and have a cup of tea.
-                manContent.clear();
             }
             else
             {

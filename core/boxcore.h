@@ -17,15 +17,17 @@
 // The modules accessed by user
 #include "modulebox.h"
 
+// Pre-defined os variables
+#include "../modules/framework/_os/osinfo.h"
+
 // The returnable item
 #include "../modules/framework/_types/returnitem.h"
 
 // The returnable codes
 #include "../modules/framework/_types/returncodes.h"
 
-// Pre-defined os variables
-#include "../modules/framework/_os/osinfo.h"
-
+// Error machine
+#include "../modules/framework/_errors/errorbase.h"
 
 namespace hdtoolbox
 {
@@ -52,11 +54,15 @@ private:
     // Control the session
     bool session;
 
+    // Handle Errors
+    ErrorBase errHandler;
+
     // For saving command history
     HDTBHistory history;
 
     // Process input
     HDTBReturnItem processRequest(std::vector<std::string>);
+
 
 };
 

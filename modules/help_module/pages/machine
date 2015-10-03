@@ -33,4 +33,5 @@ Machine
 |                    |--Storage Info            [hdd]
 |                    |--CPU Info                [cpu]
 |                    |--OS Info                 [os]
+|                    |--Net Info                [net]
 |
