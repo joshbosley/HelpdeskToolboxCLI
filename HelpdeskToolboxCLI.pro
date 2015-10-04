@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     modules/framework/_errors/errorbase.cpp \
     modules/framework/_modules/modulebase.cpp \
     modules/ss_module/ssmodule.cpp \
-    modules/network_module/networkmodule.cpp
+    modules/network_module/networkmodule.cpp \
+    modules/network_module/sub-modules/networkclient.cpp
 
 HEADERS += \
     core/boxcore.h \
@@ -45,7 +46,8 @@ HEADERS += \
     modules/framework/_types/returnitem.h \
     modules/ss_module/ssmodule.h \
     modules/network_module/networkmodule.h \
-    modules/network_module/networkdirectory.h
+    modules/network_module/networkdirectory.h \
+    modules/network_module/sub-modules/networkclient.h
 
 DISTFILES += \
     work.todo \
@@ -61,5 +63,6 @@ DISTFILES += \
     lib/machine/deployment.properties \
     lib/machine/fixJava.bat \
     lib/machine/cleanup.bat \
-    modules/help_module/pages/network
+    modules/help_module/pages/network \
+    lib/machine/editUAC.bat
 
