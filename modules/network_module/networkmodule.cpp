@@ -75,18 +75,69 @@ HDTBReturnItem NetworkModule::processRequest(std::vector<std::string> args)
         break;
 
     case HDTB_NETOWRK_CMD_BLAST:
+        return blast();
         break;
 
     case HDTB_NETWORK_CMD_KNOCK_SEQUENCE:
+        return knock();
         break;
 
     case HDTB_NETWORK_CMD_COMMLINK:
+        return comm();
         break;
 
     default:
         break;
     }
 
+    return errorHandler.generateGenericError("Uncaught return");
+}
+
+HDTBReturnItem NetworkModule::setupConnection()
+{
+    // Make sure somethinf isn't already going on.
+    // Get address, and port from user
+    std::string addr, port;
+    std::cout << "Address: ";
+    std::cin >> addr;
+
+    std::cout << "Port: ";
+    std::cin >> port;
+
+    std::vector<std::string> request;
+    request.push_back("setInfo");
+    request.push_back(addr);
+    request.push_back(port);
+
+    // Process command
+    HDTBReturnItem ri =  netClient.processRequest(request);
+
+    switch(ri.retCode)
+    {
+    case HDTB_RETURN_GOOD:
+        // Double check to make sure connection was set
+        if(!netClient.getConnectionSetState())
+            return HDTBReturnItem(HDTB_RETURN_BAD,
+                                  "Good report, but connection not set");
+        // Return good
+        return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+        break;
+
+    case HDTB_RETURN_BAD:
+    {
+        // Relay error
+        return HDTBReturnItem(HDTB_RETURN_BAD, ri.message);
+    }
+        break;
+
+    case HDTB_RETURN_EXIT:
+        return HDTBReturnItem(HDTB_RETURN_EXIT, "");
+        break;
+
+    default:
+        errorHandler.generateGenericError("Default reached in human interaction");
+        break;
+    }
     return errorHandler.generateGenericError("Uncaught return");
 }
 
@@ -118,11 +169,35 @@ HDTBReturnItem NetworkModule::reset()
 
 HDTBReturnItem NetworkModule::blast()
 {
-#ifdef __APPLE__
-    return errorHandler.generateGenericError("Under Construction");
-#elif _WIN32
-    return errorHandler.generateGenericError("Under Construction");
-#endif
+    // Handle setting up the connection
+    HDTBReturnItem ri =  setupConnection();
+
+    switch(ri.retCode)
+    {
+    case HDTB_RETURN_GOOD:
+    {
+        // If connection setup goes well, start blast.
+        #ifdef __APPLE__
+            return errorHandler.generateGenericError("Blast is Under Construction");
+        #elif _WIN32
+            return errorHandler.generateGenericError("Blast is Under Construction");
+        #endif
+    }
+        break;
+
+    case HDTB_RETURN_BAD:
+        return HDTBReturnItem(HDTB_RETURN_BAD, ri.message);
+        break;
+
+    case HDTB_RETURN_EXIT:
+        return HDTBReturnItem(HDTB_RETURN_EXIT, "");
+        break;
+
+    default:
+        return errorHandler.generateGenericError("Default reached in human interaction");
+        break;
+    }
+    return errorHandler.generateGenericError("Uncaught return");
 }
 
 HDTBReturnItem NetworkModule::knock()
