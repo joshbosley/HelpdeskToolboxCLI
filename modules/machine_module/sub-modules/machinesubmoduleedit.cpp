@@ -29,11 +29,6 @@ MachineSubModuleEdit::MachineSubModuleEdit() :
                 HDTBMapItem
                 ("cname", HDTB_MACHINE_CMD_CNAME)
                 );
-
-    commands.insert(
-                HDTBMapItem
-                ("ie", HDTB_MACHINE_CMD_IE)
-                );
 }
 
 HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> args)
@@ -111,22 +106,6 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
             return editComputerName(args[2]);
         }
         break;
-
-    case HDTB_MACHINE_CMD_IE:
-#ifdef _WIN32
-        if (args.size() != 3)
-        {
-            return errorHandler.generateGenericError("No version given <10/11>");
-        }
-        else
-        {
-            return editIE(args[2]);
-        }
-#else
-        return errorHandler.generateGenericError("OS not supported");
-#endif
-        break;
-
     default:
         break;
     }
@@ -227,12 +206,6 @@ HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
     sethostname(name.c_str(), name.length());
     return errorHandler.generateGenericError("Not yet fully tested");
 #endif
-}
-
-HDTBReturnItem MachineSubModuleEdit::editIE(std::string version)
-{
-    std::cout << std::endl << "Change version to : " << version << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
 }
 
 }

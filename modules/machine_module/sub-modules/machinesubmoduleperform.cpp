@@ -30,11 +30,6 @@ MachineSubModulePerform::MachineSubModulePerform() :
                 HDTBMapItem
                 ("scrub", HDTB_MACHINE_CMD_SCRUB)
                 );
-
-    commands.insert(
-                HDTBMapItem
-                ("fixjava", HDTB_MACHINE_CMD_FIXJAVA)
-                );
 }
 
 HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<std::string> args)
@@ -88,9 +83,6 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
         return scrub();
         break;
 
-    case HDTB_MACHINE_CMD_FIXJAVA:
-        return fixJava();
-        break;
     default:
         break;
     }
@@ -154,32 +146,5 @@ HDTBReturnItem MachineSubModulePerform::scrub()
 #endif
 }
 
-HDTBReturnItem MachineSubModulePerform::fixJava()
-{
-#ifdef _WIN32
-
-    system("start lib\\machine\\fixJava.bat");
-    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
-
-#elif __APPLE__
-
-    std::string reply;
-    std::cout << std::endl
-    /*  J  */ << std::endl
-    /*  A  */ << "This has not been fully tested, and might not fix the issue. Continue ?  (y/n)"
-    /*  B  */ << std::endl
-    /*  :) */ << std::endl;
-    std::cin >> reply;
-    if(reply != "y")
-        return errorHandler.generateGenericError("Canceled fixJava");
-
-    // Attempt to fix java
-    system("cp -a lib\\machine\\deployment.properties ${deployment.java.home}/lib/deploy/deployment.properties");
-
-    return errorHandler.generateGenericError("[UNDER CONSTRUCTION] - fixJava ran, who knows how it ended up");
-#else
-    return errorHandler.generateGenericError("OS not supported");
-#endif
-}
 
 }
