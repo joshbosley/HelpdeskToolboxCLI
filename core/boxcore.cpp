@@ -35,7 +35,7 @@ BoxCore::BoxCore()
 
     moduleMap.insert(
                     HDTBMapItem
-                    ("software", HDTB_CODE_SS)
+                    ("software", HDTB_CODE_SOFTWARE)
                     );
 
     moduleMap.insert(
@@ -192,7 +192,7 @@ HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
             break;
         */
 
-        case HDTB_CODE_SS:
+        case HDTB_CODE_SOFTWARE:
             ri = modBox.ssModule.processRequest(args);
             break;
 

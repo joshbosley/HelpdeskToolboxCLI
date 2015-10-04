@@ -11,7 +11,7 @@
 
 #include "../modules/help_module/helpmodule.h"
 #include "../modules/machine_module/machinemodule.h"
-#include "../modules/ss_module/ssmodule.h"
+#include "../modules/software_module/softwaremodule.h"
 #include "../modules/network_module/networkmodule.h"
 
 // END_MODULES_INCLUDES
@@ -25,7 +25,7 @@ namespace hdtoolbox
         // Add modules here!
         MachineModule machineModule;
 
-        SSModule ssModule;
+        SoftwareModule ssModule;
 
         NetworkModule networkModule;
     };
