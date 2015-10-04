@@ -205,7 +205,11 @@ HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 HDTBReturnItem MachineSubModuleEdit::editUAC(std::string state)
 {
     std::cout << std::endl << "Change state to : " << state << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+
+    std::string exec = ("start lib\\machine\\editUAC.bat " + state + "\n");
+    system(exec.c_str());
+
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
