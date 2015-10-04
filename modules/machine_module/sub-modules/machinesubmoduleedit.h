@@ -25,7 +25,6 @@ private:
     HDTBReturnItem editWorkGroup(std::string);
     HDTBReturnItem editUAC(std::string);
     HDTBReturnItem editComputerName(std::string);
-    HDTBReturnItem editIE(std::string);
 };
 
 }
