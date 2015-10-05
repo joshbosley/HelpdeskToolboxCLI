@@ -23,22 +23,38 @@ private:
 
     typedef struct connInfo
     {
-        int port;
+        // Connection information
+        int port, sock, block;
         std::string address;
+
+        // Object connected to
+        struct sockaddr_in addr_in;
+
     } connInfo;
 
     typedef struct stateInfo
     {
+        // Stated of conenction type
         bool comm, blindComm, connectionSet;
+
+        // Data last received from socket
+        std::string data_received;
     } stateInfo;
 
     stateInfo statusInfo;
     connInfo connectionInfo;
 
+    // Methods accessed by process request
     HDTBReturnItem setConnectionInfo(std::string address, int port);
     HDTBReturnItem send(std::string message);
     HDTBReturnItem initiateComms();
     HDTBReturnItem initiateBlindComms();
+    HDTBReturnItem kill();
+
+    // Methods accessed by private class methods
+    bool send_data(std::string data);
+    bool recieve_data();
+    void close_current();
 };
 }
 #endif // HDTB_NETWORKCLIENT_H

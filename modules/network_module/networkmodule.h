@@ -20,13 +20,14 @@ public:
 
 private:
 
-    HDTBReturnItem setupConnection();
+    HDTBReturnItem setupConnection(std::string host, std::string port);
 
     HDTBReturnItem ping(std::string ip, std::string count);
     HDTBReturnItem reset();
-    HDTBReturnItem blast();
+    HDTBReturnItem reach(std::string host, std::string port, std::string message);
     HDTBReturnItem knock();
     HDTBReturnItem comm();
+    HDTBReturnItem kill();
 
     NetworkClient netClient;
 };
