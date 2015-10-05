@@ -21,7 +21,7 @@ NetworkModule::NetworkModule() :
 
     commands.insert(
                 HDTBMapItem
-                ("blast", HDTB_NETOWRK_CMD_BLAST)
+                ("reach", HDTB_NETOWRK_CMD_REACH)
                 );
 
     commands.insert(
@@ -33,6 +33,7 @@ NetworkModule::NetworkModule() :
                 HDTBMapItem
                 ("comm", HDTB_NETWORK_CMD_COMMLINK)
                 );
+
 }
 
 HDTBReturnItem NetworkModule::processRequest(std::vector<std::string> args)
@@ -74,8 +75,14 @@ HDTBReturnItem NetworkModule::processRequest(std::vector<std::string> args)
         return reset();
         break;
 
-    case HDTB_NETOWRK_CMD_BLAST:
-        return blast();
+    case HDTB_NETOWRK_CMD_REACH:
+        if (args.size() != 5)
+            return errorHandler.generateGenericError("send <destination> <port> <message>");
+
+        if( !(atoi(args[3].c_str())) )
+            return  errorHandler.generateGenericError("Invalid port, must be an integer");
+
+        return reach(args[2], args[3], args[4]);
         break;
 
     case HDTB_NETWORK_CMD_KNOCK_SEQUENCE:
@@ -93,20 +100,11 @@ HDTBReturnItem NetworkModule::processRequest(std::vector<std::string> args)
     return errorHandler.generateGenericError("Uncaught return");
 }
 
-HDTBReturnItem NetworkModule::setupConnection()
+HDTBReturnItem NetworkModule::setupConnection(std::string address, std::string port)
 {
-    // Make sure somethinf isn't already going on.
-    // Get address, and port from user
-    std::string addr, port;
-    std::cout << "Address: ";
-    std::cin >> addr;
-
-    std::cout << "Port: ";
-    std::cin >> port;
-
     std::vector<std::string> request;
     request.push_back("setInfo");
-    request.push_back(addr);
+    request.push_back(address);
     request.push_back(port);
 
     // Process command
@@ -167,35 +165,29 @@ HDTBReturnItem NetworkModule::reset()
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
-HDTBReturnItem NetworkModule::blast()
+HDTBReturnItem NetworkModule::reach(std::string address, std::string port, std::string message)
 {
+    std::vector<std::string> req;
+    HDTBReturnItem res(HDTB_RETURN_BAD, "");
+
     // Handle setting up the connection
-    HDTBReturnItem ri =  setupConnection();
+    HDTBReturnItem ri =  setupConnection(address, port);
 
-    switch(ri.retCode)
+    if(ri.retCode == HDTB_RETURN_GOOD)
     {
-    case HDTB_RETURN_GOOD:
-    {
-        // If connection setup goes well, start blast.
-        #ifdef __APPLE__
-            return errorHandler.generateGenericError("Blast is Under Construction");
-        #elif _WIN32
-            return errorHandler.generateGenericError("Blast is Under Construction");
-        #endif
+        req.push_back("send");
+        req.push_back(message);
+        res = netClient.processRequest(req);
+
+        // Kill the current connection when complete
+        req.clear();
+        req.push_back("kill");
+        netClient.processRequest(req);
+        return res;
     }
-        break;
-
-    case HDTB_RETURN_BAD:
-        return HDTBReturnItem(HDTB_RETURN_BAD, ri.message);
-        break;
-
-    case HDTB_RETURN_EXIT:
-        return HDTBReturnItem(HDTB_RETURN_EXIT, "");
-        break;
-
-    default:
-        return errorHandler.generateGenericError("Default reached in human interaction");
-        break;
+    else
+    {
+        return errorHandler.generateGenericError("Could not set up connection - [reach]");
     }
     return errorHandler.generateGenericError("Uncaught return");
 }
