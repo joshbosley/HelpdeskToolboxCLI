@@ -41,6 +41,8 @@ public:
 
     void beginHumanInteraction();
 
+    void runAsScript(std::string);
+
 private:
 
     std::string prompt;
