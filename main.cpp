@@ -11,10 +11,24 @@
 #include <iostream>
 #include "core/boxcore.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    hdtoolbox::BoxCore HDCore;
-    HDCore.beginHumanInteraction();
+    if(argc == 1)
+    {
+        hdtoolbox::BoxCore HDCore;
+        HDCore.beginHumanInteraction();
+    }
+    else if(argc == 2)
+    {
+        hdtoolbox::BoxCore HDCore;
+        std::cout << "\tStarting Script Mode " << std::endl;
+        HDCore.runAsScript(std::string(argv[1]));
+    }
+    else
+    {
+        std::cout << " Invalid arguments " << std::endl
+                  << argv[0] << " <filename>" << std::endl;
+    }
     return 0;
 }
 

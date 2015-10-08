@@ -1,3 +1,9 @@
+Scripting:
+
+    Started to create scripting methods.
+
+
+
 Module creation :
 
     Disk formatting
@@ -52,9 +58,9 @@ Module Status:
 
     ping                                                [COMPLETE]              [COMPLETE]
     reset                                               [COMPLETE]              [COMPLETE]
-    blast                                               [Under Construction]    [Under Construction]
+    reach                                               [Under Construction]    [COMPLETE]
     knock                                               [Under Construction]    [Under Construction]
 
     SUB MODULES
 
-    comm                                                [Under Construction]    [Under Construction]
+    network client                                      [Under Construction]    [Under Construction]

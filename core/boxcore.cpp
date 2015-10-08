@@ -121,6 +121,33 @@ void BoxCore::beginHumanInteraction()
 #endif
 }
 
+void BoxCore::runAsScript(std::string fName)
+{
+    std::cout << " Running : " << fName << std::endl;
+
+    std::ifstream file;
+    file.open(fName);
+
+    std::string currline;
+    std::vector<std::string> lines;
+
+    // Open file
+    if(file.eof())
+    {
+        std::getline(file, currline);
+        lines.push_back(currline);
+    }
+    else
+    {
+        std::cout << " File not found" << std::endl;
+    }
+    file.close();
+
+#ifdef __APPLE__
+       std::cout << HDTB_PUT_RESET;
+#endif
+}
+
 HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)
 {
     // Default return
