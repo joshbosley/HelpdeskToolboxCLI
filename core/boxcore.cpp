@@ -48,7 +48,6 @@ void BoxCore::beginHumanInteraction()
 {
     session = true;
     std::string line;
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
 
     std::cout << "Initiating. Type 'exit' to end session." << std::endl;
 
@@ -68,49 +67,7 @@ void BoxCore::beginHumanInteraction()
             std::istream_iterator<std::string>{iss},
             std::istream_iterator<std::string>{}};
 
-        // Add request to history
-        history.push(args);
-
-        // See if user wants to exit or clear the screen
-        if(args[0] == "exit")
-        {
-            session = false;
-            continue;
-        }
-        else if(args[0] == "clear")
-        {
-#ifdef _WIN32
-            system("cls");
-#else
-            system("clear");
-#endif
-            // Once the clear command has been done, skip processing
-            continue;
-        }
-
-        // Process request
-        ri = processRequest(args);
-
-        // Handle ri by return code
-        switch(ri.retCode)
-        {
-        case HDTB_RETURN_GOOD:
-            // Do nothing at the moment if everything is good
-            break;
-
-        case HDTB_RETURN_BAD:
-            std::cout << std::endl << "[HDTB_RETURN_BAD] : Message > " << ri.message << std::endl;
-            break;
-
-        case HDTB_RETURN_EXIT:
-            // Return HDTB_RETURN_EXIT from module to initiate exit
-            session = false;
-            break;
-
-        default:
-            errHandler.generateGenericError("Default reached in human interaction");
-            break;
-        }
+        doProcess(args);
     }
 
     // Exit message.
@@ -123,29 +80,107 @@ void BoxCore::beginHumanInteraction()
 
 void BoxCore::runAsScript(std::string fName)
 {
-    std::cout << " Running : " << fName << std::endl;
+#ifdef __APPLE__
+    char buff[PATH_MAX];
+    getcwd(buff, sizeof(buff));
+    fName = (std::string(buff) + "/" + fName);
+
+#elif _WIN32
+    char buff[ MAX_PATH ];
+    std::string cwd = std::string( buff, GetModuleFileName( NULL, buff, MAX_PATH ) );
+    fName = (std::string(buff) + "\\" + fName);
+
+#endif
+
+    std::cout << " Initiating : " << fName << std::endl;
 
     std::ifstream file;
     file.open(fName);
+
+    if(!file.is_open())
+        std::cout << " File not found " << std::endl;
 
     std::string currline;
     std::vector<std::string> lines;
 
     // Open file
-    if(file.eof())
+    while(!file.eof())
     {
         std::getline(file, currline);
-        lines.push_back(currline);
-    }
-    else
-    {
-        std::cout << " File not found" << std::endl;
+        if(currline != "")
+            lines.push_back(currline);
     }
     file.close();
 
+    // Go through each line, make it into its own process vector
+    // and submit it to process request
+
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    for(HDTBProcessIterator i = lines.begin(); i < lines.end(); ++i)
+    {
+        std::string line = *i;
+        std::istringstream iss(line);
+        std::vector<std::string> args{
+            std::istream_iterator<std::string>{iss},
+            std::istream_iterator<std::string>{}};
+
+        // Send to get processed
+        doProcess(args);
+    }
 #ifdef __APPLE__
        std::cout << HDTB_PUT_RESET;
 #endif
+}
+
+HDTBReturnItem BoxCore::doProcess(std::vector<std::string> args)
+{
+    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
+
+    // Add request to history
+    history.push(args);
+
+    // See if user wants to exit or clear the screen
+    if(args[0] == "exit")
+    {
+        session = false;
+        return ri;
+    }
+    else if(args[0] == "clear")
+    {
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
+        // Once the clear command has been done, skip processing
+        return ri;
+    }
+
+    // Process request
+    ri = processRequest(args);
+
+    // Handle ri by return code
+    switch(ri.retCode)
+    {
+    case HDTB_RETURN_GOOD:
+        // Do nothing at the moment if everything is good
+        break;
+
+    case HDTB_RETURN_BAD:
+        std::cout << std::endl << "[HDTB_RETURN_BAD] : Message > " << ri.message << std::endl;
+        break;
+
+    case HDTB_RETURN_EXIT:
+        // Return HDTB_RETURN_EXIT from module to initiate exit
+        session = false;
+        break;
+
+    default:
+        errHandler.generateGenericError("Default reached in human interaction");
+        break;
+    }
+    return ri;
 }
 
 HDTBReturnItem BoxCore::processRequest(std::vector<std::string> args)

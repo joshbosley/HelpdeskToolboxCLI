@@ -20,6 +20,8 @@
 // Pre-defined os variables
 #include "../modules/framework/_os/osinfo.h"
 
+#include "../modules/framework/_os/osincludes.h"
+
 // The returnable item
 #include "../modules/framework/_types/returnitem.h"
 
@@ -62,8 +64,11 @@ private:
     // For saving command history
     HDTBHistory history;
 
+    HDTBReturnItem doProcess(std::vector<std::string>);
+
     // Process input
     HDTBReturnItem processRequest(std::vector<std::string>);
+
 
 
 };
