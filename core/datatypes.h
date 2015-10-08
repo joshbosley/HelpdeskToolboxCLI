@@ -26,6 +26,7 @@ typedef std::map<std::string, int>::iterator HDTBMapIterator;
 // History stack
 typedef std::stack< std::vector<std::string> > HDTBHistory;
 
+typedef std::vector<std::string>::iterator HDTBProcessIterator;
 
 /*
         Other
