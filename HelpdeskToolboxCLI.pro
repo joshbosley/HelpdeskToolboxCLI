@@ -71,5 +71,6 @@ DISTFILES += \
     lib/software/fixJava.bat \
     lib/machine/cleanup.bat \
     modules/help_module/pages/network \
-    lib/machine/editUAC.bat
+    lib/machine/editUAC.bat \
+    lib/machine/performUpdates.ps1
 
