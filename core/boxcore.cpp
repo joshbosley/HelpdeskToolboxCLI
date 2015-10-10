@@ -87,7 +87,7 @@ void BoxCore::runAsScript(std::string fName)
 
 #elif _WIN32
     char buff[ MAX_PATH ];
-    std::string cwd = std::string( buff, GetModuleFileName( NULL, buff, MAX_PATH ) );
+    // std::string cwd = std::string( buff, GetModuleFileName( NULL, buff, MAX_PATH ) );
     fName = (std::string(buff) + "\\" + fName);
 
 #endif

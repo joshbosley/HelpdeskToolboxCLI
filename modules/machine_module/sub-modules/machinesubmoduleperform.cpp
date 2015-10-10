@@ -130,7 +130,17 @@ HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 HDTBReturnItem MachineSubModulePerform::winupdate()
 {
     std::cout << std::endl << "Launch windows update" << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+
+#ifdef _WIN32
+    //Set the execution policy
+    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+    std::string exec = ("start powershell.exe lib\\machine\\performUpdates.ps1 \n" );
+    system(exec.c_str());
+
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+
+#endif
 }
 
 HDTBReturnItem MachineSubModulePerform::scrub()
