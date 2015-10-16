@@ -118,10 +118,8 @@ HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
     std::cin >> password;
 
 #ifdef _WIN32
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");

@@ -102,10 +102,7 @@ HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
     std::cin >> password;
     std::cout << domain << " " << username << " " << password << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
-
-    std::string exec = ("start powershell.exe lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #elif __APPLE__
