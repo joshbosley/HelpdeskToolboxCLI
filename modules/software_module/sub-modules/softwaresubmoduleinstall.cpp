@@ -70,7 +70,13 @@ namespace hdtoolbox
     HDTBReturnItem SoftwareSubModuleInstall::installJava()
     {
         #ifdef _WIN32
-            return HDTBReturnItem(HDTB_RETURN_BAD, "Not yet programmed");
+            //Set the execution policy
+            system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+
+            std::string exec = ("start powershell.exe lib\\software\\installJava.ps1 \n" );
+            system(exec.c_str());
+
+            return HDTBReturnItem(HDTB_RETURN_GOOD, "");
         #elif __APPLE__
             return errorHandler.generateGenericError("OS not yet supported");
         #else
