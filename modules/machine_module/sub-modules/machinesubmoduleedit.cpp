@@ -125,10 +125,8 @@ HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
     std::cin >> password;
 
 #ifdef _WIN32
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
@@ -173,10 +171,7 @@ HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 {
     std::cout << std::endl << "Change to workgroup : " << workgroup << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
-
-    std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
     system(exec.c_str());
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
@@ -194,10 +189,8 @@ HDTBReturnItem MachineSubModuleEdit::editUAC(std::string state)
 HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
 {
 #ifdef _WIN32
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    std::string exec = ("start powershell.exe lib\\machine\\editCname.ps1 " + name + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editCname.ps1 " + name + "\n" );
     system(exec.c_str());
 
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
