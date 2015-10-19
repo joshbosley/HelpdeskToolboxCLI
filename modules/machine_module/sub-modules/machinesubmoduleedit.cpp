@@ -29,11 +29,6 @@ MachineSubModuleEdit::MachineSubModuleEdit() :
                 HDTBMapItem
                 ("cname", HDTB_MACHINE_CMD_CNAME)
                 );
-
-    commands.insert(
-                HDTBMapItem
-                ("ie", HDTB_MACHINE_CMD_IE)
-                );
 }
 
 HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> args)
@@ -67,13 +62,7 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
         }
         else
         {
-#ifdef _WIN32
             return editDomain(args[2]);
-#elif __APPLE__
-            return errorHandler.generateGenericError("OS not yet supported");
-#else
-            return errorHandler.generateGenericError("OS not supported");
-#endif
         }
         break;
 
@@ -117,22 +106,6 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
             return editComputerName(args[2]);
         }
         break;
-
-    case HDTB_MACHINE_CMD_IE:
-#ifdef _WIN32
-        if (args.size() != 3)
-        {
-            return errorHandler.generateGenericError("No version given <10/11>");
-        }
-        else
-        {
-            return editIE(args[2]);
-        }
-#else
-        return errorHandler.generateGenericError("OS not supported");
-#endif
-        break;
-
     default:
         break;
     }
@@ -142,28 +115,55 @@ HDTBReturnItem MachineSubModuleEdit::processRequest(std::vector<std::string> arg
 
 HDTBReturnItem MachineSubModuleEdit::editDomain(std::string domain)
 {
-#ifdef _WIN32
     std::cout << " DOMAIN : " << domain;
 
     std::string username, password;
-
     std::cout << std::endl << "Administrator Username : ";
     std::cin >> username;
 
     std::cout << std::endl << "Administrator Password : ";
     std::cin >> password;
-    std::cout << domain << " " << username << " " << password << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+#ifdef _WIN32
 
-    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
-#else
-    HDTB_UNUSED(domain);
-    return errorHandler.generateGenericError("OS not supported");
+#elif __APPLE__
+
+    // Under construction warning flag
+    std::string reply;
+    std::cout << std::endl
+    /*  J  */ << std::endl
+    /*  A  */ << "This is under construction. Who knows what will happen. Continue ?  (y/n)"
+    /*  B  */ << std::endl
+    /*  :) */ << std::endl;
+    std::cin >> reply;
+    if(reply != "y")
+        return errorHandler.generateGenericError("Canceled add domain");
+
+    // Make sure to leave current domain
+    system("sudo dsconfigad -leave");
+
+    // Get hostname
+    char hn[150];
+    std::memset(hn, 0, 150);
+    gethostname(hn, 150);
+    std::string hostName = hn;
+
+    // Create command
+    std::string exec = ("dsconfigad -add "      + domain   +
+                           " -username "        + username +
+                           " -password "        + password +
+                           " -computer "        + hostName +
+                           " -localhome enable -useuncpath enable -groups Domain Admins, Domain Users, -alladmins enable");
+    // Execute command
+    system(exec.c_str());
+
+    // Exit
+    std::cout << "Command executed" << std::endl;
+    return errorHandler.generateGenericError("[UNDER CONSTRUCTION] - add domain command executed.");
 #endif
 }
 
@@ -171,46 +171,34 @@ HDTBReturnItem MachineSubModuleEdit::editWorkGroup(std::string workgroup)
 {
     std::cout << std::endl << "Change to workgroup : " << workgroup << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
-
-    std::string exec = ("start powershell.exe lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editWorkgroup.ps1 " + workgroup + "\n" );
     system(exec.c_str());
-
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editUAC(std::string state)
 {
     std::cout << std::endl << "Change state to : " << state << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+
+    std::string exec = ("start lib\\machine\\editUAC.bat " + state + "\n");
+    system(exec.c_str());
+
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModuleEdit::editComputerName(std::string name)
 {
-    HDTBReturnItem ri(HDTB_RETURN_BAD, HDTB_DEFAULT_MESSAGE);
-
 #ifdef _WIN32
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
 
-    std::string exec = ("start powershell.exe lib\\machine\\editCname.ps1 " + name + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editCname.ps1 " + name + "\n" );
     system(exec.c_str());
 
-    ri.retCode = HDTB_RETURN_GOOD;
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif __APPLE__
-    HDTB_UNUSED(name);
-    return errorHandler.generateGenericError("OS not yet supported ");
+    sethostname(name.c_str(), name.length());
+    return errorHandler.generateGenericError("Not yet fully tested");
 #endif
-    return ri;
-
-}
-
-HDTBReturnItem MachineSubModuleEdit::editIE(std::string version)
-{
-    std::cout << std::endl << "Change version to : " << version << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
 }
 
 }

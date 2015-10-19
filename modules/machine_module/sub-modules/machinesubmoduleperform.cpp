@@ -30,11 +30,6 @@ MachineSubModulePerform::MachineSubModulePerform() :
                 HDTBMapItem
                 ("scrub", HDTB_MACHINE_CMD_SCRUB)
                 );
-
-    commands.insert(
-                HDTBMapItem
-                ("fixjava", HDTB_MACHINE_CMD_FIXJAVA)
-                );
 }
 
 HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<std::string> args)
@@ -74,7 +69,6 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
         {
             return copy(args[2], args[3]);
         }
-
         break;
 
     case HDTB_MACHINE_CMD_WUPDATE:
@@ -89,9 +83,6 @@ HDTBReturnItem hdtoolbox::MachineSubModulePerform::processRequest(std::vector<st
         return scrub();
         break;
 
-    case HDTB_MACHINE_CMD_FIXJAVA:
-        return fixJava();
-        break;
     default:
         break;
     }
@@ -104,13 +95,18 @@ HDTBReturnItem MachineSubModulePerform::cleanup()
 #ifdef _WIN32
     system("start lib\\machine\\cleanup.bat");
     std::cout << std::endl << "Cleanup complete.." << std::endl;
-    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 
 #elif __APPLE__
-    // Do this last
+    system("sudo rm ~/Library/Safari/History.plist");
+    system("sudo rm ~/Library/Safari/Downloads.plist");
+    system("sudo rm ~/Library/Safari/HistoryIndex.sk");
+    system("sudo rm ~/Library/Safari/LastSession.plist");
+    system("sudo rm ~/Library/Safari/TopSites.plist");
+    system("sudo rm -rf ~/Library/Caches/com.apple.safari");
+
     system("sudo rm -rf ~/.Trash/*");
-    return errorHandler.generateGenericError("Not yet fully created");
 #endif
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
@@ -124,7 +120,7 @@ HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 #elif __APPLE__
     std::string command = ("cp -a " + src + " " + dest);
     system(command.c_str());
-    return HDTBReturnItem(HDTB_RETURN_BAD, "YET TO BE TESTED");
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #else
     return errorHandler.generateGenericError("OS not supported");
 
@@ -134,7 +130,15 @@ HDTBReturnItem MachineSubModulePerform::copy(std::string src, std::string dest)
 HDTBReturnItem MachineSubModulePerform::winupdate()
 {
     std::cout << std::endl << "Launch windows update" << std::endl;
-    return errorHandler.generateGenericError("Not yet created");
+
+#ifdef _WIN32
+
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\performUpdates.ps1 \n" );
+    system(exec.c_str());
+
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+
+#endif
 }
 
 HDTBReturnItem MachineSubModulePerform::scrub()
@@ -150,18 +154,5 @@ HDTBReturnItem MachineSubModulePerform::scrub()
 #endif
 }
 
-HDTBReturnItem MachineSubModulePerform::fixJava()
-{
-#ifdef _WIN32
-
-    system("start lib\\machine\\fixJava.bat");
-    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
-
-#elif __APPLE__
-    return errorHandler.generateGenericError("OS not yet supported");
-#else
-    return errorHandler.generateGenericError("OS not supported");
-#endif
-}
 
 }

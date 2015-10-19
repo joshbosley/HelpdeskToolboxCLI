@@ -1,7 +1,18 @@
 # HelpdeskToolboxCLI
 *Our very own toolbox!*
 
-Adding your own module : 
+## HDTB Usage 
+
+	./HelpdeskToolboxCLI
+		- Will initiate the toolbox in human interface mode, where the 
+		  user can interact with the prompt to accomplish tasks.
+
+	./HelpdeskToolboxCLI <filename>
+		- Will initiate the toolbox in script mode which will read in 
+		  the file line-by-line initiating each command. This is for
+		  further automation of tasks.
+
+## Adding your own module : 
 
 1. Create a module code in modules/framework/_modules/moduledirectory.h
     - Keep to naming scheme, and remember to ensure unique id
@@ -24,7 +35,7 @@ Adding your own module :
 
 ### Authors
 
-* Josh Bosley
+* Josh Bosley 
 * Tyler Postma
 
 

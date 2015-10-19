@@ -25,7 +25,6 @@ private:
     HDTBReturnItem copy(std::string, std::string);
     HDTBReturnItem winupdate();
     HDTBReturnItem scrub();
-    HDTBReturnItem fixJava();
 
 };
 

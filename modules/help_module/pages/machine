@@ -18,7 +18,7 @@ Machine
 |                    |
 |                    |--Domain                  [domain]
 |                    |--Workgroup               [workgroup]
-|                    |--User Accounts           [account] <name>
+|                    |--User Account            [account] <name>
 |
 |----- Submodule : perform
 |                    |
@@ -26,3 +26,12 @@ Machine
 |                    |--Data Copy               [dcopy] <source> <destination>
 |                    |--Windows Updates         [winupdate]
 |                    |--Scrub all user data     [scrub]
+|                    |--Java Fixer              [fixjava]
+|
+|----- Submodule : get
+|                    |--Memory                  [mem]
+|                    |--Storage Info            [hdd]
+|                    |--CPU Info                [cpu]
+|                    |--OS Info                 [os]
+|                    |--Net Info                [net]
+|

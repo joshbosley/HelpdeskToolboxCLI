@@ -14,7 +14,12 @@ SOURCES += main.cpp \
     modules/machine_module/sub-modules/machinesubmoduleget.cpp \
     modules/framework/_errors/errorbase.cpp \
     modules/framework/_modules/modulebase.cpp \
-    modules/ss_module/ssmodule.cpp
+    modules/network_module/networkmodule.cpp \
+    modules/network_module/sub-modules/networkclient.cpp \
+    modules/software_module/sub-modules/softwaresubmoduleinstall.cpp \
+    modules/software_module/sub-modules/softwaresubmodulemodify.cpp \
+    modules/software_module/sub-modules/softwaresubmoduleremove.cpp \
+    modules/software_module/softwaremodule.cpp
 
 HEADERS += \
     core/boxcore.h \
@@ -42,7 +47,14 @@ HEADERS += \
     modules/framework/_os/osinfo.h \
     modules/framework/_types/returncodes.h \
     modules/framework/_types/returnitem.h \
-    modules/ss_module/ssmodule.h
+    modules/network_module/networkmodule.h \
+    modules/network_module/networkdirectory.h \
+    modules/network_module/sub-modules/networkclient.h \
+    modules/software_module/sub-modules/softwaresubmoduleinstall.h \
+    modules/software_module/sub-modules/softwaresubmodulemodify.h \
+    modules/software_module/sub-modules/softwaresubmoduleremove.h \
+    modules/software_module/softwaremodule.h \
+    modules/software_module/softwaremoduledirectory.h
 
 DISTFILES += \
     work.todo \
@@ -55,7 +67,10 @@ DISTFILES += \
     lib/machine/editWorkgroup.ps1 \
     lib/machine/removeDomain.ps1 \
     lib/machine/editCname.ps1 \
-    lib/machine/deployment.properties \
-    lib/machine/fixJava.bat \
-    lib/machine/cleanup.bat
+    lib/software/deployment.properties \
+    lib/software/fixJava.bat \
+    lib/machine/cleanup.bat \
+    modules/help_module/pages/network \
+    lib/machine/editUAC.bat \
+    lib/machine/performUpdates.ps1
 

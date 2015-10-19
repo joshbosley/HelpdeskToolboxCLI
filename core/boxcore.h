@@ -17,15 +17,19 @@
 // The modules accessed by user
 #include "modulebox.h"
 
+// Pre-defined os variables
+#include "../modules/framework/_os/osinfo.h"
+
+#include "../modules/framework/_os/osincludes.h"
+
 // The returnable item
 #include "../modules/framework/_types/returnitem.h"
 
 // The returnable codes
 #include "../modules/framework/_types/returncodes.h"
 
-// Pre-defined os variables
-#include "../modules/framework/_os/osinfo.h"
-
+// Error machine
+#include "../modules/framework/_errors/errorbase.h"
 
 namespace hdtoolbox
 {
@@ -38,6 +42,8 @@ public:
     BoxCore();
 
     void beginHumanInteraction();
+
+    void runAsScript(std::string);
 
 private:
 
@@ -52,11 +58,18 @@ private:
     // Control the session
     bool session;
 
+    // Handle Errors
+    ErrorBase errHandler;
+
     // For saving command history
     HDTBHistory history;
 
+    HDTBReturnItem doProcess(std::vector<std::string>);
+
     // Process input
     HDTBReturnItem processRequest(std::vector<std::string>);
+
+
 
 };
 

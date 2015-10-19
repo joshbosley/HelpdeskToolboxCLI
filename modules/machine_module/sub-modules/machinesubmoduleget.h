@@ -25,6 +25,7 @@ private:
     HDTBReturnItem getHDD();
     HDTBReturnItem getCPU();
     HDTBReturnItem getOS();
+    HDTBReturnItem getNetInfo();
 };
 
 }

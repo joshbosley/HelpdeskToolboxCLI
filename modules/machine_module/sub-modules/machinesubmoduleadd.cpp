@@ -60,15 +60,8 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         }
         else
         {
-
-#ifdef _WIN32
             return addToDomain(args[2]);
 
-#elif __APPLE__
-            return errorHandler.generateGenericError("OS not yet supported");
-#else
-            return errorHandler.generateGenericError("OS not supported");
-#endif
         }
         break;
 
@@ -81,8 +74,6 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
         {
 #ifdef _WIN32
             return addToWorkGroup(args[2]);
-#elif __APPLE__
-            return errorHandler.generateGenericError("OS not yet supported");
 #else
             return errorHandler.generateGenericError("OS not supported");
 #endif
@@ -115,26 +106,56 @@ HDTBReturnItem MachineSubModuleAdd::processRequest(std::vector<std::string> args
 */
 HDTBReturnItem MachineSubModuleAdd::addToDomain(std::string domain)
 {
-    // Wont reach here if not _WIN32
+    std::cout << std::endl << " DOMAIN : " << domain << std::endl;
 
-    std::cout << " DOMAIN : " << domain;
-
+    // Get admin username and password
     std::string username, password;
 
-    std::cout << std::endl << "Administrator Username : ";
+    std::cout << std::endl << "Network Administrator Username : ";
     std::cin >> username;
 
-    std::cout << std::endl << "Administrator Password : ";
+    std::cout << std::endl << "Network Administrator Password : ";
     std::cin >> password;
-    std::cout << domain << " " << username << " " << password << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
+#ifdef _WIN32
 
-    std::string exec = ("start powershell.exe lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\editDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
 
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+
+#elif __APPLE__
+
+    // Under construction warning flag
+    std::string reply;
+    std::cout << std::endl
+    /*  J  */ << std::endl
+    /*  A  */ << "This is under construction. Who knows what will happen. Continue ?  (y/n)"
+    /*  B  */ << std::endl
+    /*  :) */ << std::endl;
+    std::cin >> reply;
+    if(reply != "y")
+        return errorHandler.generateGenericError("Canceled add domain");
+
+    // Get hostname
+    char hn[150];
+    std::memset(hn, 0, 150);
+    gethostname(hn, 150);
+    std::string hostName = hn;
+
+    // Create command
+    std::string exec = ("sudo dsconfigad -add " + domain   +
+                           " -username "        + username +
+                           " -password "        + password +
+                           " -computer "        + hostName +
+                           " -localhome enable -useuncpath enable -groups Domain Admins, Domain Users, -alladmins enable");
+    // Execute command
+    system(exec.c_str());
+
+    // Exit
+    std::cout << "Command executed" << std::endl;
+    return errorHandler.generateGenericError("[UNDER CONSTRUCTION] - add domain command executed.");
+#endif
 }
 
 /*

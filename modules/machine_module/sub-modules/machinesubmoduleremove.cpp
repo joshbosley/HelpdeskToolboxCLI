@@ -57,13 +57,7 @@ HDTBReturnItem MachineSubModuleRemove::processRequest(std::vector<std::string> a
         }
         else
         {
-#ifdef _WIN32
-                return remDomain(args[2]);
-#elif __APPLE__
-            return errorHandler.generateGenericError("OS not yet supported");
-#else
-            return errorHandler.generateGenericError("OS not supported");
-#endif
+            return remDomain(args[2]);
         }
         break;
 
@@ -97,6 +91,8 @@ HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
 {
     std::cout << std::endl << "Remove from domain : " << domain << std::endl;
 
+#ifdef _WIN32
+
     std::string username, password;
 
     std::cout << std::endl << "Administrator Username : ";
@@ -106,12 +102,27 @@ HDTBReturnItem MachineSubModuleRemove::remDomain(std::string domain)
     std::cin >> password;
     std::cout << domain << " " << username << " " << password << std::endl;
 
-    //Set the execution policy
-    system("start powershell.exe Set-ExecutionPolicy Bypass \n");
-
-    std::string exec = ("start powershell.exe lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
+    std::string exec = ("start powershell.exe -ExecutionPolicy Bypass -File lib\\machine\\removeDomain.ps1 " + domain + " " + username + " " + password + "\n" );
     system(exec.c_str());
     return HDTBReturnItem(HDTB_RETURN_GOOD, "");
+#elif __APPLE__
+
+    // Under construction warning flag
+    std::string reply;
+    std::cout << std::endl
+    /*  J  */ << std::endl
+    /*  A  */ << "This is under construction. Who knows what will happen. Continue ?  (y/n)"
+    /*  B  */ << std::endl
+    /*  :) */ << std::endl;
+    std::cin >> reply;
+    if(reply != "y")
+        return errorHandler.generateGenericError("Canceled add domain");
+
+    system("sudo dsconfigad -leave");
+
+    std::cout << "Command executed" << std::endl;
+    return errorHandler.generateGenericError("[UNDER CONSTRUCTION] - add domain command executed.");
+#endif
 }
 
 HDTBReturnItem MachineSubModuleRemove::remWorkGroup()
@@ -139,16 +150,26 @@ HDTBReturnItem MachineSubModuleRemove::remAccount(std::string account)
 
     system(removeUser.c_str());
 
-    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 #elif __APPLE__
 
-    //Apple has a weird way of removing users with dscl
-    //Avoiding for now
+     //Warning Flag
+    std::string reply;
+    std::cout << std::endl
+    /*  J  */ << std::endl
+    /*  A  */ << "Are you in single-user mode? [Hold Command-s at startup]  (y/n)"
+    /*  B  */ << std::endl
+    /*  :) */ << std::endl;
+    std::cin >> reply;
+    if(reply != "y")
+        return errorHandler.generateGenericError("Must be in single-user mode.");
 
-    HDTB_UNUSED(account);
-    return errorHandler.generateGenericError("OS not yet supported");
-
+    // Initiate removal of user
+    std::string command  = ("sudo dscl . delete /users/" + account);
+    std::string command2 = ("rm -r /users/" + account);
+    system(command.c_str());
+    system(command2.c_str());
 #endif
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 }

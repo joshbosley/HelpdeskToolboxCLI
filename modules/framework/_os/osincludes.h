@@ -8,8 +8,15 @@
 #elif __APPLE__
 
     // HDD Information
-    #include <sys/statvfs.h>
+    #include <unistd.h>
     #include <sys/sysctl.h>
+    #include <sys/statvfs.h>
+
+    // Network Server
+    #include<netdb.h>
+    #include<string.h>
+    #include<arpa/inet.h>
+    #include<sys/socket.h>
 
 #else
 

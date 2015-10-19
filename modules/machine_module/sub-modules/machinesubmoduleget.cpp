@@ -28,6 +28,11 @@ MachineSubModuleGet::MachineSubModuleGet() :
                 HDTBMapItem
                 ("os", HDTB_MACHINE_CMD_OS)
                 );
+
+    commands.insert(
+                HDTBMapItem
+                ("net", HDTB_MACHINE_CMD_IP)
+                );
 }
 
 HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args)
@@ -68,6 +73,10 @@ HDTBReturnItem MachineSubModuleGet::processRequest(std::vector<std::string> args
 
     case HDTB_MACHINE_CMD_OS:
         return getOS();
+        break;
+
+    case HDTB_MACHINE_CMD_IP:
+        return getNetInfo();
         break;
 
     default:
@@ -153,6 +162,21 @@ HDTBReturnItem MachineSubModuleGet::getOS()
 #else
     return errorHandler.generateGenericError("OS not supported");
 #endif
+}
+
+HDTBReturnItem MachineSubModuleGet::getNetInfo()
+{
+    std::cout << "NET INFO : " << std::endl;
+
+#ifdef __APPLE__
+    system("ifconfig");
+    std::cout << std::endl;
+
+#elif _WIN32
+    system("ipconfig");
+    std::cout << std::endl;
+#endif
+    return HDTBReturnItem(HDTB_RETURN_GOOD, "");
 }
 
 }
