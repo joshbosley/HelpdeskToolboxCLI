@@ -156,7 +156,17 @@ HDTBReturnItem NetworkClient::setConnectionInfo(std::string address, int port)
                               "Can not process request. Blind comm currently open");
 
 #ifdef _WIN32
+
+    std::cout << "WINDOWS NOT YET CODED " << std::endl << "[NetworkClient::setConnectionInfo(std::string address, int port)]" << std::endl;
+
     return errorHandler.generateGenericError("OS not yet supported");
+
+
+
+
+
+
+
 #else
 
     // If its already connected, close it.

@@ -74,3 +74,4 @@ DISTFILES += \
     lib/machine/editUAC.bat \
     lib/machine/performUpdates.ps1
 
+win32:RC_ICONS += resource/hdtb1.ico

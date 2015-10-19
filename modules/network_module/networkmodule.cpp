@@ -21,7 +21,7 @@ NetworkModule::NetworkModule() :
 
     commands.insert(
                 HDTBMapItem
-                ("reach", HDTB_NETOWRK_CMD_REACH)
+                ("send", HDTB_NETOWRK_CMD_REACH)
                 );
 
     commands.insert(
@@ -187,7 +187,7 @@ HDTBReturnItem NetworkModule::reach(std::string address, std::string port, std::
     }
     else
     {
-        return errorHandler.generateGenericError("Could not set up connection - [reach]");
+        return errorHandler.generateGenericError("Could not set up connection - [send]");
     }
     return errorHandler.generateGenericError("Uncaught return");
 }

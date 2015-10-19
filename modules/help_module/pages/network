@@ -4,9 +4,11 @@ Network
 |
 |----- reset    [reset]
 |
-|----- blast    [blast]
+|----- send     [send] <address> <port> <message> ... Windows not yet implemented
 |
-|----- knock    [knock]
+|----- blast    [blast] ... Under Construction
+|
+|----- knock    [knock] ... Under Construction
 |
 |----- Submodule : comm
 |                     |
